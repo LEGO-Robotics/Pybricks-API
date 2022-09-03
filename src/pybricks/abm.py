@@ -195,9 +195,29 @@ for io_pup_device_sense in (
 ):
     decor(IOPUpDevice, io_pup_device_sense, sense)
 
-# UARTDevice
-# ----------
-# TODO
+# IOUARTDevice
+# (pybricks.com/ev3-micropython/iodevices#pybricks.iodevices.UARTDevice)
+# ----------------------------------------------------------------------
+for io_uart_device_act in (
+    # pybricks.com/ev3-micropython/iodevices#pybricks.iodevices.UARTDevice.write
+    'write',
+
+    # pybricks.com/ev3-micropython/iodevices#pybricks.iodevices.UARTDevice.clear
+    'clear',
+):
+    decor(IOUARTDevice, io_uart_device_act, act)
+
+for io_uart_device_sense in (
+    # pybricks.com/ev3-micropython/iodevices#pybricks.iodevices.UARTDevice.read
+    'read',
+
+    # pybricks.com/ev3-micropython/iodevices#pybricks.iodevices.UARTDevice.read_all
+    'read_all',
+
+    # pybricks.com/ev3-micropython/iodevices#pybricks.iodevices.UARTDevice.waiting
+    'waiting',
+):
+    decor(IOUARTDevice, io_uart_device_sense, sense)
 
 
 # robotics
