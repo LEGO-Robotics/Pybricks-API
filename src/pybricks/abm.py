@@ -111,8 +111,14 @@ for io_analog_sensor_sense in (
 ):
     decor(IOAnalogSensor, io_analog_sensor_sense, sense)
 
-# -------
-# TODO
+# IODCMotor
+# (pybricks.com/ev3-micropython/iodevices#dc-motor)
+# -------------------------------------------------
+for io_dc_motor_act in (
+    'dc',
+    'stop',
+):
+    decor(IODCMotor, io_dc_motor_act, act)
 
 # Ev3devSensor
 # ------------
