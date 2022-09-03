@@ -27,6 +27,8 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.8"
 
+Agent-Behavior-Model = '>= 22.9.3'
+
 [tool.poetry.dev-dependencies]
 black = "^22.3.0"
 doc8 = "^0.8.1"
