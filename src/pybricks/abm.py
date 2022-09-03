@@ -5,15 +5,15 @@ from abm.decor import act, sense
 
 from .hubs import (EV3Brick,   # noqa: F401
                    InventorHub, PrimeHub, CityHub, MoveHub, TechnicHub)
-from .iodevices import (AnalogSensor,   # noqa: F401
-                        DCMotor,
-                        Ev3devSensor,
-                        I2CDevice,
-                        LUMPDevice,
-                        LWP3Device,
-                        PUPDevice,
-                        UARTDevice)
 from .ev3dev._speaker import Speaker as EV3Speaker
+from .iodevices import (AnalogSensor as IOAnalogSensor,
+                        DCMotor as IODCMotor,
+                        Ev3devSensor as IOEV3DevSensor,
+                        I2CDevice as IOI2CDevice,
+                        LUMPDevice as IOLUMPDevice,
+                        LWP3Device as IOLWP3Device,
+                        PUPDevice as IOPUpDevice,
+                        UARTDevice as IOUARTDevice)
 from .messaging import (Connection,   # noqa: F401
                         Mailbox, LogicMailbox, NumericMailbox, TextMailbox,
                         BluetoothMailboxServer, BluetoothMailboxClient)
@@ -115,10 +115,23 @@ for ev3_speaker_act in (
 # -------------------------------------------------------------------------------------
 # TODO
 
-# PUPDevice
+# IOPUpDevice
 # (docs.pybricks.com/en/latest/iodevices/pupdevice.html#pybricks.iodevices.PUPDevice)
 # -----------------------------------------------------------------------------------
-# TODO
+for io_pup_device_act in (
+    # docs.pybricks.com/en/latest/iodevices/pupdevice.html#pybricks.iodevices.PUPDevice.write
+    'write',
+):
+    decor(IOPUpDevice, io_pup_device_act, act)
+
+for io_pup_device_sense in (
+    # docs.pybricks.com/en/latest/iodevices/pupdevice.html#pybricks.iodevices.PUPDevice.info
+    'info',
+
+    # docs.pybricks.com/en/latest/iodevices/pupdevice.html#pybricks.iodevices.PUPDevice.read
+    'read',
+):
+    decor(IOPUpDevice, io_pup_device_sense, sense)
 
 # UARTDevice
 # ----------
