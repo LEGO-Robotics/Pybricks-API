@@ -129,7 +129,7 @@ for a in (
 # DriveBase
 # (docs.pybricks.com/en/latest/robotics.html#pybricks.robotics.DriveBase)
 # -----------------------------------------------------------------------
-for a in (
+for drive_base_act in (
     # docs.pybricks.com/en/latest/robotics.html#pybricks.robotics.DriveBase.straight
     'straight',
 
@@ -151,9 +151,9 @@ for a in (
     # docs.pybricks.com/en/latest/robotics.html#pybricks.robotics.DriveBase.reset
     'reset',
 ):
-    decor(DriveBase, a, act)
+    decor(DriveBase, drive_base_act, act)
 
-for s in (
+for drive_base_sense in (
     # docs.pybricks.com/en/latest/robotics.html#pybricks.robotics.DriveBase.distance
     'distance',
 
@@ -163,7 +163,7 @@ for s in (
     # docs.pybricks.com/en/latest/robotics.html#pybricks.robotics.DriveBase.state
     'state',
 ):
-    decor(DriveBase, s, sense)
+    decor(DriveBase, drive_base_sense, sense)
 
 
 # tools
