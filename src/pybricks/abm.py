@@ -159,10 +159,23 @@ for io_lump_device_sense in (
 ):
     decor(IOLUMPDevice, io_lump_device_sense, sense)
 
-# LWP3Device
+# IOLWP3Device
 # (docs.pybricks.com/en/latest/iodevices/lwp3device.html#pybricks.iodevices.LWP3Device)
 # -------------------------------------------------------------------------------------
-# TODO
+for io_lwp3_device_act in (
+    # docs.pybricks.com/en/latest/iodevices/lwp3device.html#pybricks.iodevices.LWP3Device.name
+    'name',
+
+    # docs.pybricks.com/en/latest/iodevices/lwp3device.html#pybricks.iodevices.LWP3Device.write
+    'write',
+):
+    decor(IOLWP3Device, io_lwp3_device_act, act)
+
+for io_lwp3_device_sense in (
+    # docs.pybricks.com/en/latest/iodevices/lwp3device.html#pybricks.iodevices.LWP3Device.read
+    'read',
+):
+    decor(IOLWP3Device, io_lwp3_device_sense, sense)
 
 # IOPUpDevice
 # (docs.pybricks.com/en/latest/iodevices/pupdevice.html#pybricks.iodevices.PUPDevice)
