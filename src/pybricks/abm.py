@@ -38,7 +38,7 @@ def decor(cls: type, method_name: str, decorator: callable, /):
 
 # EV3Speaker
 # ----------
-for a in (
+for ev3_speaker_act in (
     # pybricks.com/ev3-micropython/hubs#pybricks.hubs.EV3Brick.speaker.beep
     'beep',
 
@@ -57,7 +57,7 @@ for a in (
     # pybricks.com/ev3-micropython/hubs#pybricks.hubs.EV3Brick.speaker.set_volume
     'set_volume',
 ):
-    decor(EV3Speaker, a, act)
+    decor(EV3Speaker, ev3_speaker_act, act)
 
 
 # InventorHub
