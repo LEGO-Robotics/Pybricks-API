@@ -14,6 +14,9 @@ from .iodevices import (AnalogSensor,   # noqa: F401
                         PUPDevice,
                         UARTDevice)
 from .ev3dev._speaker import Speaker as EV3Speaker
+from .messaging import (Connection,   # noqa: F401
+                        Mailbox, LogicMailbox, NumericMailbox, TextMailbox,
+                        BluetoothMailboxServer, BluetoothMailboxClient)
 from .robotics import DriveBase
 from .tools import DataLog, StopWatch
 from . import tools
