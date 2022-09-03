@@ -149,7 +149,7 @@ for io_i2c_device_sense in (
 # ----------------------------------------------------------------------
 for io_lump_device_act in (
     # pybricks.com/ev3-micropython/iodevices#pybricks.iodevices.LUMPDevice.write
-    'write',
+    # 'write',   # AttributeError: type object 'LUMPDevice' has no attribute 'write'
 ):
     decor(IOLUMPDevice, io_lump_device_act, act)
 
