@@ -90,11 +90,27 @@ for ev3_speaker_act in (
 # (docs.pybricks.com/en/latest/iodevices)
 # =======================================
 
-# AnalogSensor
-# ------------
-# TODO
+# IOAnalogSensor
+# (pybricks.com/ev3-micropython/iodevices#pybricks.iodevices.AnalogSensor)
+# ------------------------------------------------------------------------
+for io_analog_sensor_act in (
+    # pybricks.com/ev3-micropython/iodevices#pybricks.iodevices.AnalogSensor.active
+    'active',
 
-# DCMotor
+    # pybricks.com/ev3-micropython/iodevices#pybricks.iodevices.AnalogSensor.passive
+    'passive',
+):
+    decor(IOAnalogSensor, io_analog_sensor_act, act)
+
+for io_analog_sensor_sense in (
+    # pybricks.com/ev3-micropython/iodevices#pybricks.iodevices.AnalogSensor.voltage
+    'voltage',
+
+    # pybricks.com/ev3-micropython/iodevices#pybricks.iodevices.AnalogSensor.resistance
+    'resistance',
+):
+    decor(IOAnalogSensor, io_analog_sensor_sense, sense)
+
 # -------
 # TODO
 
