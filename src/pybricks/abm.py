@@ -144,9 +144,20 @@ for io_i2c_device_sense in (
 ):
     decor(IOI2CDevice, io_i2c_device_sense, sense)
 
-# LUMPDevice
-# ----------
-# TODO
+# IOLUMPDevice
+# (pybricks.com/ev3-micropython/iodevices#pybricks.iodevices.LUMPDevice)
+# ----------------------------------------------------------------------
+for io_lump_device_act in (
+    # pybricks.com/ev3-micropython/iodevices#pybricks.iodevices.LUMPDevice.write
+    'write',
+):
+    decor(IOLUMPDevice, io_lump_device_act, act)
+
+for io_lump_device_sense in (
+    # pybricks.com/ev3-micropython/iodevices#pybricks.iodevices.LUMPDevice.read
+    'read',
+):
+    decor(IOLUMPDevice, io_lump_device_sense, sense)
 
 # LWP3Device
 # (docs.pybricks.com/en/latest/iodevices/lwp3device.html#pybricks.iodevices.LWP3Device)
