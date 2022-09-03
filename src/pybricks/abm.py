@@ -180,27 +180,27 @@ for data_log_act in (
     decor(DataLog, data_log_act, act)
 
 # StopWatch
-# (docs.pybricks.com/en/latest/tools/#pybricks.tools.StopWatch)
-# -------------------------------------------------------------
+# (docs.pybricks.com/en/latest/tools#pybricks.tools.StopWatch)
+# ------------------------------------------------------------
 for stop_watch_act in (
-    # docs.pybricks.com/en/latest/tools/index.html#pybricks.tools.StopWatch.pause
+    # docs.pybricks.com/en/latest/tools#pybricks.tools.StopWatch.pause
     'pause',
 
-    # docs.pybricks.com/en/latest/tools/index.html#pybricks.tools.StopWatch.resume
+    # docs.pybricks.com/en/latest/tools#pybricks.tools.StopWatch.resume
     'resume',
 
-    # docs.pybricks.com/en/latest/tools/index.html#pybricks.tools.StopWatch.reset
+    # docs.pybricks.com/en/latest/tools#pybricks.tools.StopWatch.reset
     'reset',
 ):
     decor(StopWatch, stop_watch_act, act)
 
 for stop_watch_sense in (
-    # docs.pybricks.com/en/latest/tools/index.html#pybricks.tools.StopWatch.time
+    # docs.pybricks.com/en/latest/tools#pybricks.tools.StopWatch.time
     'time',
 ):
     decor(StopWatch, stop_watch_sense, sense)
 
 # wait
-# (docs.pybricks.com/en/latest/tools/index.html#pybricks.tools.wait)
-# ------------------------------------------------------------------
+# (docs.pybricks.com/en/latest/tools#pybricks.tools.wait)
+# -------------------------------------------------------
 tools.wait: callable = act(tools.wait)
