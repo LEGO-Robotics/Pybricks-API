@@ -15,7 +15,7 @@ from .iodevices import (AnalogSensor,   # noqa: F401
                         UARTDevice)
 from .ev3dev._speaker import Speaker as EV3Speaker
 from .robotics import DriveBase
-from .tools import StopWatch
+from .tools import DataLog, StopWatch
 from . import tools
 
 
@@ -170,10 +170,19 @@ for s in (
 # (docs.pybricks.com/en/latest/tools)
 # ===================================
 
+# DataLog
+# (pybricks.com/ev3-micropython/tools#pybricks.tools.DataLog)
+# -----------------------------------------------------------
+for data_log_act in (
+    # pybricks.com/ev3-micropython/tools#pybricks.tools.DataLog.log
+    'log',
+):
+    decor(DataLog, data_log_act, act)
+
 # StopWatch
 # (docs.pybricks.com/en/latest/tools/#pybricks.tools.StopWatch)
 # -------------------------------------------------------------
-for a in (
+for stop_watch_act in (
     # docs.pybricks.com/en/latest/tools/index.html#pybricks.tools.StopWatch.pause
     'pause',
 
@@ -183,13 +192,13 @@ for a in (
     # docs.pybricks.com/en/latest/tools/index.html#pybricks.tools.StopWatch.reset
     'reset',
 ):
-    decor(StopWatch, a, act)
+    decor(StopWatch, stop_watch_act, act)
 
-for s in (
+for stop_watch_sense in (
     # docs.pybricks.com/en/latest/tools/index.html#pybricks.tools.StopWatch.time
     'time',
 ):
-    decor(StopWatch, s, sense)
+    decor(StopWatch, stop_watch_sense, sense)
 
 # wait
 # (docs.pybricks.com/en/latest/tools/index.html#pybricks.tools.wait)
