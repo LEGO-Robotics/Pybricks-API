@@ -6,10 +6,11 @@ from . import (   # noqa: F401
     # pybricks.com/ev3-micropython/hubs
     # ---------------------------------
     hub,
+    speaker,
 
     # ev3devices
     # (pybricks.com/ev3-micropython/ev3devices)
     # =========================================
-    speaker,
+    motor,
     touch_sensor,
     ultrasonic_sensor)
