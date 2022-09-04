@@ -11,4 +11,5 @@ from . import (   # noqa: F401
     # (pybricks.com/ev3-micropython/ev3devices)
     # =========================================
     speaker,
+    touch_sensor,
     ultrasonic_sensor)
