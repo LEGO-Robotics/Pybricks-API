@@ -1,6 +1,9 @@
-"""ABM-decorate pybricks.nxtdevices."""
+"""ABM-decorating pybricks.nxtdevices."""
 
 
+# nxtdevices
+# (pybricks.com/ev3-micropython/nxtdevices)
+# =========================================
 from . import (color_sensor,   # noqa: F401
                energy_meter,
                light_sensor,
