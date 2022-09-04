@@ -10,7 +10,7 @@ from ..util import act_decor, sense_decor
 # -------------------------------------------------------------------------------------
 for a in (
     # docs.pybricks.com/en/latest/iodevices/lwp3device.html#pybricks.iodevices.LWP3Device.name
-    'name',
+    'name',   # *** NOTE: OVERLOADED METHOD ***
 
     # docs.pybricks.com/en/latest/iodevices/lwp3device.html#pybricks.iodevices.LWP3Device.write
     'write',

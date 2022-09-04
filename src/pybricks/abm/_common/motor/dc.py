@@ -7,10 +7,10 @@ from ...util import act_decor
 
 # DCMotor
 # -------
-for dc_motor_act in (
+for a in (
     'dc',
     'stop',
     'brake',
     'settings',   # *** NOTE: OVERLOADED METHOD ***
 ):
-    act_decor(DCMotor, dc_motor_act)
+    act_decor(DCMotor, a)
