@@ -13,5 +13,6 @@ from . import (   # noqa: F401
     # =========================================
     motor,
     color_sensor,
+    gyro_sensor,
     touch_sensor,
     ultrasonic_sensor)
