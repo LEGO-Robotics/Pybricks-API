@@ -2,5 +2,6 @@
 
 
 from . import (   # noqa: F401
+    robotics,
     tools,
 )
