@@ -19,7 +19,7 @@ for a in (
     'curve',
 
     # docs.pybricks.com/en/latest/robotics.html#pybricks.robotics.DriveBase.settings
-    'settings',
+    'settings',   # *** NOTE: OVERLOADED METHOD ***
 
     # docs.pybricks.com/en/latest/robotics.html#pybricks.robotics.DriveBase.drive
     'drive',
