@@ -9,8 +9,8 @@ from ...util import act_decor
 # (docs.pybricks.com/en/latest/pupdevices/pfmotor.html)
 # -----------------------------------------------------
 for a in (
-    'dc',
-    'stop',
-    'brake',
+    # 'dc',   # already decorated in _common.DCMotor
+    # 'stop',   # already decorated in _common.DCMotor
+    # 'brake',   # already decorated in _common.DCMotor
 ):
     act_decor(PFMotor, a)
