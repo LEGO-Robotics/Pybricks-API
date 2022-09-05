@@ -8,7 +8,6 @@ from . import (hubs,   # noqa: F401
                motor,
                color_light_matrix,
                color_sensor,
-               color_distance_sensor,
                force_sensor,
                infrared_sensor,
                light,

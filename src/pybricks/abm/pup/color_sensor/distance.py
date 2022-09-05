@@ -1,8 +1,8 @@
 """ABM-decorating pybricks.pupdevices.ColorDistanceSensor."""
 
 
-from ...pupdevices import ColorDistanceSensor
-from ..util import act_decor, sense_decor
+from ....pupdevices import ColorDistanceSensor
+from ...util import act_decor, sense_decor
 
 
 # ColorDistanceSensor
