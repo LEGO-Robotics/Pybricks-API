@@ -11,21 +11,21 @@ from . import distance   # noqa: F401
 # -----------------------------------------------------------------------------------------
 for a in (
     # docs.pybricks.com/en/latest/pupdevices/colorsensor.html#pybricks.pupdevices.ColorSensor.detectable_colors
-    'detectable_colors',   # *** NOTE: OVERLOADED METHOD ***
+    # 'detectable_colors',   # already decorated in _common.CommonColorSensor
 ):
     act_decor(ColorSensor, a)
 
 for s in (
     # docs.pybricks.com/en/latest/pupdevices/colorsensor.html#pybricks.pupdevices.ColorSensor.color
-    'color',
+    # 'color',   # already decorated in _common.AmbientColorSensor
 
     # docs.pybricks.com/en/latest/pupdevices/colorsensor.html#pybricks.pupdevices.ColorSensor.reflection
-    'reflection',
+    # 'reflection',   # already decorated in _common.CommonColorSensor
 
     # docs.pybricks.com/en/latest/pupdevices/colorsensor.html#pybricks.pupdevices.ColorSensor.ambient
-    'ambient',
+    # 'ambient',   # already decorated in _common.CommonColorSensor
 
     # docs.pybricks.com/en/latest/pupdevices/colorsensor.html#pybricks.pupdevices.ColorSensor.hsv
-    'hsv',
+    # 'hsv',   # already decorated in _common.AmbientColorSensor
 ):
     sense_decor(ColorSensor, s)
