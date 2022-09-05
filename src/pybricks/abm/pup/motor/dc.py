@@ -9,9 +9,9 @@ from ...util import act_decor
 # (docs.pybricks.com/en/latest/pupdevices/dcmotor.html#pybricks.pupdevices.DCMotor)
 # ---------------------------------------------------------------------------------
 for a in (
-    'dc',
-    'stop',
-    'brake',
-    'settings',   # *** NOTE: OVERLOADED METHOD ***
+    # 'dc',   # already decorated in _common.DCMotor
+    # 'stop',   # already decorated in _common.DCMotor
+    # 'brake',   # already decorated in _common.DCMotor
+    # 'settings',   # already decorated in _common.DCMotor
 ):
     act_decor(DCMotor, a)
