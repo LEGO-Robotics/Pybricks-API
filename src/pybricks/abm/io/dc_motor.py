@@ -9,7 +9,7 @@ from ..util import act_decor
 # (pybricks.com/ev3-micropython/iodevices#dc-motor)
 # -------------------------------------------------
 for a in (
-    'dc',
-    'stop',
+    # 'dc',   # already decorated in _common.DCMotor
+    # 'stop',   # already decorated in _common.DCMotor
 ):
     act_decor(DCMotor, a)
