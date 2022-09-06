@@ -10,6 +10,6 @@ from ..util import act_decor
 # -------------------------------------------------------------------------------
 for a in (
     # docs.pybricks.com/en/latest/pupdevices/remote.html#pybricks.pupdevices.Remote.name
-    'name',   # *** NOTE: OVERLOADED METHOD ***
+    # 'name',   # *** NOTE: OVERLOADED METHOD ***
 ):
     act_decor(Remote, a)

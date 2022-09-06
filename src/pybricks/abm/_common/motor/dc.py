@@ -11,6 +11,6 @@ for a in (
     'dc',
     'stop',
     'brake',
-    'settings',   # *** NOTE: OVERLOADED METHOD ***
+    # 'settings',   # *** NOTE: OVERLOADED METHOD ***
 ):
     act_decor(DCMotor, a)

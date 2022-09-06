@@ -9,16 +9,16 @@ from ...util import act_decor, sense_decor
 # -------
 for a in (
     # docs.pybricks.com/en/latest/pupdevices/motor.html#pybricks.pupdevices.Motor.Motor.control.limits
-    'limits',   # *** NOTE: OVERLOADED METHOD ***
+    # 'limits',   # *** NOTE: OVERLOADED METHOD ***
 
     # docs.pybricks.com/en/latest/pupdevices/motor.html#pybricks.pupdevices.Motor.Motor.control.pid
-    'pid',   # *** NOTE: OVERLOADED METHOD ***
+    # 'pid',   # *** NOTE: OVERLOADED METHOD ***
 
     # docs.pybricks.com/en/latest/pupdevices/motor.html#pybricks.pupdevices.Motor.Motor.control.target_tolerances
-    'target_tolerances',   # *** NOTE: OVERLOADED METHOD ***
+    # 'target_tolerances',   # *** NOTE: OVERLOADED METHOD ***
 
     # docs.pybricks.com/en/latest/pupdevices/motor.html#pybricks.pupdevices.Motor.Motor.control.stall_tolerances
-    'stall_tolerances',   # *** NOTE: OVERLOADED METHOD ***
+    # 'stall_tolerances',   # *** NOTE: OVERLOADED METHOD ***
 ):
     act_decor(Control, a)
 

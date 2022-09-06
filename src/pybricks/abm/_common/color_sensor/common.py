@@ -8,7 +8,7 @@ from ...util import act_decor, sense_decor
 # CommonColorSensor
 # -----------------
 for a in (
-    'detectable_colors',   # *** NOTE: OVERLOADED METHOD ***
+    # 'detectable_colors',   # *** NOTE: OVERLOADED METHOD ***
 ):
     act_decor(CommonColorSensor, a)
 
