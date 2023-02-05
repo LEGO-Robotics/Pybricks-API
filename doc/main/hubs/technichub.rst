@@ -3,8 +3,8 @@
 Technic Hub
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. figure:: ../../main/images/technichub.png
-    :height: 15 em
+.. figure:: ../../main/cad/output/hub-technic.png
+    :width: 40%
 
 .. autoclass:: pybricks.hubs.TechnicHub
     :no-members:
@@ -46,6 +46,12 @@ Technic Hub
     .. automethod:: pybricks.hubs::TechnicHub.system.set_stop_button
 
     .. automethod:: pybricks.hubs::TechnicHub.system.name
+
+    .. automethod:: pybricks.hubs::TechnicHub.system.storage
+
+        You can store up to 128 bytes of data on this hub. The data is cleared
+        when you update the Pybricks firmware or if you restore the original
+        firmware.
 
     .. automethod:: pybricks.hubs::TechnicHub.system.shutdown
 

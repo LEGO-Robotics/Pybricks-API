@@ -68,6 +68,44 @@ class System:
             The hub name.
         """
 
+    @overload
+    def storage(self, offset: int, *, read: int) -> bytes:
+        ...
+
+    @overload
+    def storage(self, offset: int, *, write: bytes) -> None:
+        ...
+
+    def storage(self, offset, read=None, write=None):
+        """
+        storage(self, offset, write=)
+        storage(self, offset, read=) -> bytes
+
+        Reads or writes binary data to persistent storage.
+
+        This lets you store data that can be used the next time you run the
+        program.
+
+        The data will be saved to flash memory when you turn the hub off
+        normally. It will not be saved if the batteries are removed *while* the
+        hub is still running.
+
+        Once saved, the data will remain available even after you remove the
+        batteries.
+
+        Args:
+            offset (int): The offset from the start of the user storage memory, in bytes.
+            read (int): The number of bytes to read. Omit this argument when writing.
+            write (bytes): The bytes to write. Omit this argument when reading.
+
+        Returns:
+            The bytes read if reading, otherwise ``None``.
+
+        Raises:
+            ValueError:
+                If you try to read or write data outside of the allowed range.
+        """
+
 
 class DCMotor:
     """Generic class to control simple motors without rotation sensors, such
@@ -161,6 +199,9 @@ class Control:
 
         If no arguments are given, this will return the current values.
 
+        The new ``acceleration`` and ``speed`` limit will become effective
+        when you give a new motor command. Ongoing maneuvers are not affected.
+
         Arguments:
             speed (Number, deg/s or Number, mm/s):
                 Maximum speed. All speed commands will be capped to this value.
@@ -178,18 +219,18 @@ class Control:
         kp: Optional[Number] = None,
         ki: Optional[Number] = None,
         kd: Optional[Number] = None,
-        reserved: Optional[Number] = None,
+        integral_deadzone: Optional[Number] = None,
         integral_rate: Optional[Number] = None,
     ) -> None:
         ...
 
     @overload
-    def pid(self) -> Tuple[int, int, int, None, int]:
+    def pid(self) -> Tuple[int, int, int, int, int]:
         ...
 
     def pid(self, *args):
-        """pid(kp, ki, kd, reserved, integral_rate)
-        pid() -> Tuple[int, int, int, None, int]
+        """pid(kp, ki, kd, integral_deadzone, integral_rate)
+        pid() -> Tuple[int, int, int, int, int]
 
         Gets or sets the PID values for position and speed control.
 
@@ -204,7 +245,8 @@ class Control:
             kd (int): Derivative position (or proportional speed) control
                 constant. It is the feedback torque per
                 unit of speed: µNm/(deg/s).
-            reserved: This setting is not used.
+            integral_deadzone (Number, deg or Number, mm): Zone around the
+                target where the error integral does not accumulate errors.
             integral_rate (Number, deg/s or Number, mm/s): Maximum rate at
                 which the error integral is allowed to grow.
         """
@@ -259,40 +301,6 @@ class Control:
                 actuation, it is stalled.
             time (Number, ms): How long the controller has to be below this
                 minimum ``speed`` before we say it is stalled.
-        """
-
-    def stalled(self) -> bool:
-        """stalled() -> bool
-
-        Checks if the controller is currently stalled.
-
-        A controller is stalled when it cannot reach the target speed or
-        position, even with the maximum actuation signal.
-
-        Returns:
-            ``True`` if the controller is stalled, ``False`` if not.
-        """
-
-    def done(self) -> bool:
-        """done() -> bool
-
-        Checks if an ongoing command or maneuver is done.
-
-        Returns:
-            ``True`` if the command is done, ``False`` if not.
-        """
-
-    def load(self) -> int:
-        """load() -> int: mNm
-
-        Estimates the load based on the torque required to maintain the
-        specified speed or angle.
-
-        When coasting, braking, or controlling the duty cycle manually, the
-        load cannot be estimated in this way. Then this method returns zero.
-
-        Returns:
-            The load torque. It returns 0 if control is not active.
         """
 
 
@@ -354,6 +362,27 @@ class Motor(DCMotor):
         Returns:
             Motor speed.
 
+        """
+
+    def stalled(self) -> bool:
+        """stalled() -> bool
+
+        Checks if the motor is currently stalled.
+
+        It is stalled when it cannot reach the target speed or position, even
+        with the maximum actuation signal.
+
+        Returns:
+            ``True`` if the motor is stalled, ``False`` if not.
+        """
+
+    def load(self) -> int:
+        """load() -> int: mNm
+
+        Estimates the load that holds back the motor when it tries to move.
+
+        Returns:
+            The load torque.
         """
 
     def reset_angle(self, angle: Optional[Number]) -> None:
@@ -465,6 +494,15 @@ class Motor(DCMotor):
 
         Returns:
             Angle at which the motor becomes stalled.
+        """
+
+    def done(self) -> bool:
+        """done() -> bool
+
+        Checks if an ongoing command or maneuver is done.
+
+        Returns:
+            ``True`` if the command is done, ``False`` if not.
         """
 
     def track_target(self, target_angle: Number) -> None:
@@ -605,34 +643,44 @@ class ColorLight:
         """
 
 
-class LightArray:
-    """Control an array of single-color lights."""
+class LightArray3:
+    """Control an array of three single-color lights."""
 
-    def __init__(self, n: int):
-        """LightArray(n)
-
-        Initializes the light array.
-
-        Arguments:
-            n (int): Number of lights
-        """
-
-    def on(self, brightness: Union[Number, Collection[Number]]) -> None:
+    def on(self, brightness: Union[Number, Tuple[Number, Number, Number]]) -> None:
         """on(brightness)
 
         Turns on the lights at the specified brightness.
 
         Arguments:
-            brightness (Number or tuple):
-                Brightness (0--100) of each light, in the order shown above.
-                If you give just one brightness value, all lights get that
-                brightness.
+            brightness (Number or tuple, %):
+                Use a single value to set the brightness of all lights at the
+                same time. Use a tuple of three values to set the brightness
+                of each light individually.
         """
 
     def off(self) -> None:
         """off()
 
         Turns off all the lights."""
+
+
+class LightArray4(LightArray3):
+    """Control an array of four single-color lights."""
+
+    def on(
+        self, brightness: Union[Number, Tuple[Number, Number, Number, Number]]
+    ) -> None:
+        """on(brightness)
+
+        Turns on the lights at the specified brightness.
+
+        Arguments:
+            brightness (Number or tuple, %):
+                Use a single value to set the brightness of all lights at the
+                same time. Use a tuple of four values to set the brightness
+                of each light individually. The order of the lights is shown
+                in the image above.
+        """
 
 
 class LightMatrix:
@@ -662,14 +710,14 @@ class LightMatrix:
                 or ``Side.BOTTOM``.
         """
 
-    def image(self, matrix: Matrix) -> None:
-        """image(matrix)
+    def icon(self, icon: Matrix) -> None:
+        """icon(icon)
 
-        Displays an image, represented by a matrix of :ref:`brightness`
+        Displays an icon, represented by a matrix of :ref:`brightness`
         values.
 
         Arguments:
-            matrix (Matrix): Matrix of intensities (:ref:`brightness`).  A 2D
+            icon (Matrix): Matrix of intensities (:ref:`brightness`). A 2D
                 list is also accepted.
         """
 

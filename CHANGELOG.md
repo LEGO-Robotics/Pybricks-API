@@ -5,7 +5,44 @@
 ## Unreleased
 
 ### Added
+- Documented ``integral_deadzone`` in ``Control.pid()``.
+
+## 3.2.0 - 2022-12-20
+
+### Changed
+- Changed module TOC headings to make it easier to find things.
+
+## 3.2.0c1 - 2022-12-09
+
+### Changed
+- Updated "front" side of the Technic Hub to be consistent with
+  the Prime Hub.
+
+## 3.2.0b6 - 2022-12-02
+
+### Added
+- Documented ``Stop.NONE`` and ``Stop.COAST_SMART``.
+- Documented ``ujson`` module.
+- Added `done` and `stalled` methods for `DriveBase`.
+
+### Changed
+- Changed `PrimeHub.display.image()` to `PrimeHub.display.icon()` and renamed
+  its kwarg from `image` to `icon`.
+- Improved presentation and docstrings of the ``ubuiltins`` and other
+  MicroPython modules
+- Moved the random numbers example for Move Hub to the Move Hub page.
+- Moved `done()`, `stalled()`, `load()` from `Control` to `Motor` object.
+
+## 3.2.0b5 - 2022-11-11
+
+### Fixed
+- Fixed Jedi code completion for `Color` and `Icon` classes in `pybricks.parameters`.
+
+## 3.2.0b4 - 2022-10-21
+
+### Added
 - Code auto-completion for `EssentialHub`.
+- Added `System.storage` method.
 
 ### Fixed
 - Fixed some type hints in `parameters` submodule.

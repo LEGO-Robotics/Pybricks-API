@@ -29,9 +29,9 @@ if TYPE_CHECKING or os.environ.get("SPHINX_BUILD") == "True":
     however, your input value will be truncated to a whole number anyway. In this
     example, either command makes the program pause for just 15 milliseconds.
 
-    .. warning::
+    .. note::
         The BOOST Move hub doesn't support floating point numbers due to
-        limited system resources, so only integers can be used on that hub.
+        limited system resources. Only integers can be used on that hub.
     """
 
 
@@ -60,21 +60,43 @@ class _PybricksEnum(Enum, metaclass=_PybricksEnumMeta):
 class Color:
     """Light or surface color."""
 
-    h: int
-    s: int
-    v: int
+    NONE: Color = ...
+    BLACK: Color = ...
+    GRAY: Color = ...
+    WHITE: Color = ...
+    RED: Color = ...
+    ORANGE: Color = ...
+    BROWN: Color = ...
+    YELLOW: Color = ...
+    GREEN: Color = ...
+    CYAN: Color = ...
+    BLUE: Color = ...
+    VIOLET: Color = ...
+    MAGENTA: Color = ...
 
     def __init__(self, h: Number, s: Number = 100, v: Number = 100):
         """Color(h, s=100, v=100)
 
         Arguments:
-            h (Number, deg): Hue (0--360)
+            h (Number, deg): Hue.
             s (Number, %): Saturation.
             v (Number, %): Brightness value.
         """
-        self.h = h % 360
-        self.s = max(0, min(s, 100))
-        self.v = max(0, min(v, 100))
+
+        self.h = int(h) % 360
+        """
+        The hue.
+        """
+
+        self.s = max(0, min(int(s), 100))
+        """
+        The saturation.
+        """
+
+        self.v = max(0, min(int(v), 100))
+        """
+        The brightness value.
+        """
 
     def __repr__(self):
         return "Color(h={}, s={}, v={})".format(self.h, self.s, self.v)
@@ -130,17 +152,32 @@ class Port(_PybricksEnum):
 
 
 class Stop(_PybricksEnum):
-    """Action after the motor stops."""
+    """Action after the motor stops or reaches its target."""
 
     COAST: Stop = 0
     """Let the motor move freely."""
+
+    COAST_SMART: Stop = 4
+    """
+    Let the motor move freely. For the next relative angle maneuver,
+    take the last target angle (instead of the current angle) as the new
+    starting point. This reduces cumulative errors. This will apply only if the
+    current angle is less than twice the configured position tolerance.
+    """
 
     BRAKE: Stop = 1
     """Passively resist small external forces."""
 
     HOLD: Stop = 2
-    """Keep controlling the motor to hold it at the commanded angle. This is
-    only available on motors with encoders."""
+    """Keep controlling the motor to hold it at the commanded angle."""
+
+    NONE: Stop = 3
+    """
+    Do not decelerate when approaching the target position. This can be used
+    to concatenate multiple motor or drive base maneuvers without stopping. If
+    no further commands are given, the motor will proceed to run indefinitely
+    at the given speed.
+    """
 
 
 class Direction(_PybricksEnum):
@@ -185,39 +222,297 @@ class Side(_PybricksEnum):
 
 
 class Icon:
-    UP: _Matrix
-    DOWN: _Matrix
-    LEFT: _Matrix
-    RIGHT: _Matrix
-    ARROW_RIGHT_UP: _Matrix
-    ARROW_RIGHT_DOWN: _Matrix
-    ARROW_LEFT_UP: _Matrix
-    ARROW_LEFT_DOWN: _Matrix
-    ARROW_UP: _Matrix
-    ARROW_DOWN: _Matrix
-    ARROW_LEFT: _Matrix
-    ARROW_RIGHT: _Matrix
-    HAPPY: _Matrix
-    SAD: _Matrix
-    EYE_LEFT: _Matrix
-    EYE_RIGHT: _Matrix
-    EYE_LEFT_BLINK: _Matrix
-    EYE_RIGHT_BLINK: _Matrix
-    EYE_RIGHT_BROW: _Matrix
-    EYE_LEFT_BROW: _Matrix
-    EYE_LEFT_BROW_UP: _Matrix
-    EYE_RIGHT_BROW_UP: _Matrix
-    HEART: _Matrix
-    PAUSE: _Matrix
-    EMPTY: _Matrix
-    FULL: _Matrix
-    SQUARE: _Matrix
-    TRIANGLE_RIGHT: _Matrix
-    TRIANGLE_LEFT: _Matrix
-    TRIANGLE_UP: _Matrix
-    TRIANGLE_DOWN: _Matrix
-    CIRCLE: _Matrix
-    CLOCKWISE: _Matrix
-    COUNTERCLOCKWISE: _Matrix
-    TRUE: _Matrix
-    FALSE: _Matrix
+    """Icons to display on a light matrix.
+
+    Each of the following attributes are matrices. This means you can scale
+    icons to adjust the brightness or add icons to make composites.
+    """
+
+    UP: _Matrix = ...
+    """
+    | ⬜⬜🟨⬜⬜
+    | ⬜🟨🟨🟨⬜
+    | 🟨🟨🟨🟨🟨
+    | ⬜🟨🟨🟨⬜
+    | ⬜🟨🟨🟨⬜
+    """
+    DOWN: _Matrix = ...
+    """
+    | ⬜🟨🟨🟨⬜
+    | ⬜🟨🟨🟨⬜
+    | 🟨🟨🟨🟨🟨
+    | ⬜🟨🟨🟨⬜
+    | ⬜⬜🟨⬜⬜
+    """
+    LEFT: _Matrix = ...
+    """
+    | ⬜⬜🟨⬜⬜
+    | ⬜🟨🟨🟨🟨
+    | 🟨🟨🟨🟨🟨
+    | ⬜🟨🟨🟨🟨
+    | ⬜⬜🟨⬜⬜
+    """
+    RIGHT: _Matrix = ...
+    """
+    | ⬜⬜🟨⬜⬜
+    | 🟨🟨🟨🟨⬜
+    | 🟨🟨🟨🟨🟨
+    | 🟨🟨🟨🟨⬜
+    | ⬜⬜🟨⬜⬜
+    """
+    ARROW_RIGHT_UP: _Matrix = ...
+    """
+    | ⬜⬜🟨🟨🟨
+    | ⬜⬜⬜🟨🟨
+    | ⬜⬜🟨⬜🟨
+    | ⬜🟨⬜⬜⬜
+    | 🟨⬜⬜⬜⬜
+    """
+    ARROW_RIGHT_DOWN: _Matrix = ...
+    """
+    | 🟨⬜⬜⬜⬜
+    | ⬜🟨⬜⬜⬜
+    | ⬜⬜🟨⬜🟨
+    | ⬜⬜⬜🟨🟨
+    | ⬜⬜🟨🟨🟨
+    """
+    ARROW_LEFT_UP: _Matrix = ...
+    """
+    | 🟨🟨🟨⬜⬜
+    | 🟨🟨⬜⬜⬜
+    | 🟨⬜🟨⬜⬜
+    | ⬜⬜⬜🟨⬜
+    | ⬜⬜⬜⬜🟨
+    """
+    ARROW_LEFT_DOWN: _Matrix = ...
+    """
+    | ⬜⬜⬜⬜🟨
+    | ⬜⬜⬜🟨⬜
+    | 🟨⬜🟨⬜⬜
+    | 🟨🟨⬜⬜⬜
+    | 🟨🟨🟨⬜⬜
+    """
+    ARROW_UP: _Matrix = ...
+    """
+    | ⬜⬜🟨⬜⬜
+    | ⬜🟨🟨🟨⬜
+    | 🟨⬜🟨⬜🟨
+    | ⬜⬜🟨⬜⬜
+    | ⬜⬜🟨⬜⬜
+    """
+    ARROW_DOWN: _Matrix = ...
+    """
+    | ⬜⬜🟨⬜⬜
+    | ⬜⬜🟨⬜⬜
+    | 🟨⬜🟨⬜🟨
+    | ⬜🟨🟨🟨⬜
+    | ⬜⬜🟨⬜⬜
+    """
+    ARROW_LEFT: _Matrix = ...
+    """
+    | ⬜⬜🟨⬜⬜
+    | ⬜🟨⬜⬜⬜
+    | 🟨🟨🟨🟨🟨
+    | ⬜🟨⬜⬜⬜
+    | ⬜⬜🟨⬜⬜
+    """
+    ARROW_RIGHT: _Matrix = ...
+    """
+    | ⬜⬜🟨⬜⬜
+    | ⬜⬜⬜🟨⬜
+    | 🟨🟨🟨🟨🟨
+    | ⬜⬜⬜🟨⬜
+    | ⬜⬜🟨⬜⬜
+    """
+    HAPPY: _Matrix = ...
+    """
+    | 🟨🟨⬜🟨🟨
+    | 🟨🟨⬜🟨🟨
+    | ⬜⬜⬜⬜⬜
+    | 🟨⬜⬜⬜🟨
+    | ⬜🟨🟨🟨⬜
+    """
+    SAD: _Matrix = ...
+    """
+    | 🟨🟨⬜🟨🟨
+    | 🟨🟨⬜🟨🟨
+    | ⬜⬜⬜⬜⬜
+    | ⬜🟨🟨🟨⬜
+    | 🟨⬜⬜⬜🟨
+    """
+    EYE_LEFT: _Matrix = ...
+    """
+    | ⬜⬜⬜⬜⬜
+    | ⬜⬜⬜⬜⬜
+    | 🟨🟨⬜⬜⬜
+    | 🟨🟨⬜⬜⬜
+    | ⬜⬜⬜⬜⬜
+    """
+    EYE_RIGHT: _Matrix = ...
+    """
+    | ⬜⬜⬜⬜⬜
+    | ⬜⬜⬜⬜⬜
+    | ⬜⬜⬜🟨🟨
+    | ⬜⬜⬜🟨🟨
+    | ⬜⬜⬜⬜⬜
+    """
+    EYE_LEFT_BLINK: _Matrix = ...
+    """
+    | ⬜⬜⬜⬜⬜
+    | ⬜⬜⬜⬜⬜
+    | ⬜⬜⬜⬜⬜
+    | 🟨🟨⬜⬜⬜
+    | ⬜⬜⬜⬜⬜
+    """
+    EYE_RIGHT_BLINK: _Matrix = ...
+    """
+    | ⬜⬜⬜⬜⬜
+    | ⬜⬜⬜⬜⬜
+    | ⬜⬜⬜⬜⬜
+    | ⬜⬜⬜🟨🟨
+    | ⬜⬜⬜⬜⬜
+    """
+    EYE_RIGHT_BROW: _Matrix = ...
+    """
+    | ⬜⬜⬜⬜⬜
+    | ⬜⬜⬜🟨🟨
+    | ⬜⬜⬜⬜⬜
+    | ⬜⬜⬜⬜⬜
+    | ⬜⬜⬜⬜⬜
+    """
+    EYE_LEFT_BROW: _Matrix = ...
+    """
+    | ⬜⬜⬜⬜⬜
+    | 🟨🟨⬜⬜⬜
+    | ⬜⬜⬜⬜⬜
+    | ⬜⬜⬜⬜⬜
+    | ⬜⬜⬜⬜⬜
+    """
+    EYE_LEFT_BROW_UP: _Matrix = ...
+    """
+    | 🟨🟨⬜⬜⬜
+    | ⬜⬜⬜⬜⬜
+    | ⬜⬜⬜⬜⬜
+    | ⬜⬜⬜⬜⬜
+    | ⬜⬜⬜⬜⬜
+    """
+    EYE_RIGHT_BROW_UP: _Matrix = ...
+    """
+    | ⬜⬜⬜🟨🟨
+    | ⬜⬜⬜⬜⬜
+    | ⬜⬜⬜⬜⬜
+    | ⬜⬜⬜⬜⬜
+    | ⬜⬜⬜⬜⬜
+    """
+    HEART: _Matrix = ...
+    """
+    | ⬜🟨⬜🟨⬜
+    | 🟨🟨🟨🟨🟨
+    | 🟨🟨🟨🟨🟨
+    | ⬜🟨🟨🟨⬜
+    | ⬜⬜🟨⬜⬜
+    """
+    PAUSE: _Matrix = ...
+    """
+    | ⬜⬜⬜⬜⬜
+    | ⬜🟨⬜🟨⬜
+    | ⬜🟨⬜🟨⬜
+    | ⬜🟨⬜🟨⬜
+    | ⬜⬜⬜⬜⬜
+    """
+    EMPTY: _Matrix = ...
+    """
+    | ⬜⬜⬜⬜⬜
+    | ⬜⬜⬜⬜⬜
+    | ⬜⬜⬜⬜⬜
+    | ⬜⬜⬜⬜⬜
+    | ⬜⬜⬜⬜⬜
+    """
+    FULL: _Matrix = ...
+    """
+    | 🟨🟨🟨🟨🟨
+    | 🟨🟨🟨🟨🟨
+    | 🟨🟨🟨🟨🟨
+    | 🟨🟨🟨🟨🟨
+    | 🟨🟨🟨🟨🟨
+    """
+    SQUARE: _Matrix = ...
+    """
+    | ⬜⬜⬜⬜⬜
+    | ⬜🟨🟨🟨⬜
+    | ⬜🟨🟨🟨⬜
+    | ⬜🟨🟨🟨⬜
+    | ⬜⬜⬜⬜⬜
+    """
+    TRIANGLE_RIGHT: _Matrix = ...
+    """
+    | ⬜🟨⬜⬜⬜
+    | ⬜🟨🟨⬜⬜
+    | ⬜🟨🟨🟨⬜
+    | ⬜🟨🟨⬜⬜
+    | ⬜🟨⬜⬜⬜
+    """
+    TRIANGLE_LEFT: _Matrix = ...
+    """
+    | ⬜⬜⬜🟨⬜
+    | ⬜⬜🟨🟨⬜
+    | ⬜🟨🟨🟨⬜
+    | ⬜⬜🟨🟨⬜
+    | ⬜⬜⬜🟨⬜
+    """
+    TRIANGLE_UP: _Matrix = ...
+    """
+    | ⬜⬜⬜⬜⬜
+    | ⬜⬜🟨⬜⬜
+    | ⬜🟨🟨🟨⬜
+    | 🟨🟨🟨🟨🟨
+    | ⬜⬜⬜⬜⬜
+    """
+    TRIANGLE_DOWN: _Matrix = ...
+    """
+    | ⬜⬜⬜⬜⬜
+    | 🟨🟨🟨🟨🟨
+    | ⬜🟨🟨🟨⬜
+    | ⬜⬜🟨⬜⬜
+    | ⬜⬜⬜⬜⬜
+    """
+    CIRCLE: _Matrix = ...
+    """
+    | ⬜🟨🟨🟨⬜
+    | 🟨🟨🟨🟨🟨
+    | 🟨🟨🟨🟨🟨
+    | 🟨🟨🟨🟨🟨
+    | ⬜🟨🟨🟨⬜
+    """
+    CLOCKWISE: _Matrix = ...
+    """
+    | 🟨🟨🟨🟨⬜
+    | 🟨⬜⬜🟨⬜
+    | 🟨⬜⬜🟨⬜
+    | 🟨⬜🟨🟨🟨
+    | ⬜⬜⬜🟨⬜
+    """
+    COUNTERCLOCKWISE: _Matrix = ...
+    """
+    | ⬜🟨🟨🟨🟨
+    | ⬜🟨⬜⬜🟨
+    | ⬜🟨⬜⬜🟨
+    | 🟨🟨🟨⬜🟨
+    | ⬜🟨⬜⬜⬜
+    """
+    TRUE: _Matrix = ...
+    """
+    | ⬜⬜⬜⬜🟨
+    | ⬜⬜⬜🟨⬜
+    | 🟨⬜🟨⬜⬜
+    | ⬜🟨⬜⬜⬜
+    | ⬜⬜⬜⬜⬜
+    """
+    FALSE: _Matrix = ...
+    """
+    | 🟨⬜⬜⬜🟨
+    | ⬜🟨⬜🟨⬜
+    | ⬜⬜🟨⬜⬜
+    | ⬜🟨⬜🟨⬜
+    | 🟨⬜⬜⬜🟨
+    """

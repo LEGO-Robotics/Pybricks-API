@@ -3,13 +3,8 @@
 Prime Hub / Inventor Hub
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. figure:: ../../main/images/primeinventorhub.png
-    :height: 15 em
-
-
-.. note:: Pybricks support for these hubs is in beta.
-            Check the `installation instructions`_ to try it out.
-            The following functions may change before the final release.
+.. figure:: ../../main/cad/output/hub-spike-inventor.png
+    :width: 80%
 
 .. class:: InventorHub
 
@@ -23,7 +18,7 @@ Prime Hub / Inventor Hub
 
     .. rubric:: Using the hub status light
 
-    .. figure:: ../../main/images/primehub_light_label.png
+    .. figure:: ../../main/diagrams/primehub_light.png
         :width: 22 em
 
     .. automethod:: pybricks.hubs::PrimeHub.light.on
@@ -36,7 +31,7 @@ Prime Hub / Inventor Hub
 
     .. rubric:: Using the light matrix display
 
-    .. figure:: ../../main/images/primehub_display_label.png
+    .. figure:: ../../main/diagrams/primehub_display.png
         :width: 22 em
 
     .. automethod:: pybricks.hubs::PrimeHub.display.orientation
@@ -45,7 +40,7 @@ Prime Hub / Inventor Hub
 
     .. automethod:: pybricks.hubs::PrimeHub.display.pixel
 
-    .. automethod:: pybricks.hubs::PrimeHub.display.image
+    .. automethod:: pybricks.hubs::PrimeHub.display.icon
 
     .. automethod:: pybricks.hubs::PrimeHub.display.animate
 
@@ -57,7 +52,7 @@ Prime Hub / Inventor Hub
 
     .. rubric:: Using the buttons
 
-    .. figure:: ../../main/images/primehub_buttons_label.png
+    .. figure:: ../../main/diagrams/primehub_buttons.png
         :width: 22 em
 
     .. automethod:: pybricks.hubs::PrimeHub.buttons.pressed
@@ -103,6 +98,10 @@ Prime Hub / Inventor Hub
     .. automethod:: pybricks.hubs::PrimeHub.system.set_stop_button
 
     .. automethod:: pybricks.hubs::PrimeHub.system.name
+
+    .. automethod:: pybricks.hubs::PrimeHub.system.storage
+
+        You can store up to 512 bytes of data on this hub.
 
     .. automethod:: pybricks.hubs::PrimeHub.system.shutdown
 
@@ -175,13 +174,15 @@ Changing the display orientation
 .. literalinclude::
     ../../../examples/pup/hub_primehub/display_orientation_imu.py
 
+.. _make_icons:
+
 Making your own images
 **********************
 
 .. literalinclude::
     ../../../examples/pup/hub_primehub/display_matrix.py
 
-Combining images to make expressions
+Combining icons to make expressions
 ************************************
 
 .. literalinclude::
@@ -250,6 +251,4 @@ Turning the hub off
 
 .. literalinclude::
     ../../../examples/pup/hub_common/build/system_shutdown_primehub.py
-
-.. _installation instructions: https://pybricks.com/install/
 

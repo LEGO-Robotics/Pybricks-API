@@ -28,8 +28,12 @@ class DriveBase:
 
     **Positive** angles and turn rates mean turning **right**.
     **Negative** means **left**. So when viewed from the top,
-    positive means clockwise and negative means counterclockwise.
+    positive means clockwise and negative means counterclockwise. If desired,
+    you can flip this convention by reversing the ``left_motor`` and
+    ``right_motor`` when you initialize this class.
 
+    See the `measuring`_ section for tips to measure and adjust the diameter
+    and axle track values.
     """
 
     distance_control = _common.Control()
@@ -139,6 +143,10 @@ class DriveBase:
 
         If you give no arguments, this returns the current values as a tuple.
 
+        The default values are automatically configured based on your wheel
+        diameter and axle track. They are selected such that your robot
+        drives at about 40% of its maximum speed.
+
         Arguments:
             straight_speed (Number, mm/s): Straight-line speed of the robot.
             straight_acceleration (Number, mm/s²): Straight-line
@@ -187,6 +195,27 @@ class DriveBase:
             then (Stop): What to do after coming to a standstill.
             wait (bool): Wait for the maneuver to complete before continuing
                          with the rest of the program.
+        """
+
+    def done(self) -> bool:
+        """done() -> bool
+
+        Checks if an ongoing command or maneuver is done.
+
+        Returns:
+            ``True`` if the command is done, ``False`` if not.
+        """
+
+    def stalled(self) -> bool:
+        """stalled() -> bool
+
+        Checks if the drive base is currently stalled.
+
+        It is stalled when it cannot reach the target speed or position, even
+        with the maximum actuation signal.
+
+        Returns:
+            ``True`` if the drivebase is stalled, ``False`` if not.
         """
 
 

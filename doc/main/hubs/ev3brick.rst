@@ -1,8 +1,8 @@
 MINDSTORMS EV3 Brick
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. figure:: ../../main/images/ev3brick.png
-    :height: 15 em
+.. figure:: ../../main/cad/output/ev3device-ev3.png
+    :width: 50%
 
 .. autoclass:: pybricks.hubs.EV3Brick
     :no-members:

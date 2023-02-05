@@ -15,6 +15,8 @@
 
 """
 The following functions and exceptions can be used without importing anything.
+
+Most functions and classes in this module do not accept keyword arguments.
 """
 
 from typing import (
@@ -177,19 +179,27 @@ class bytes:
 
     def __init__(self, *args):
         r"""
+        bytes(​)
+        bytes(integer)
+        bytes(iterable)
+        bytes(string, encoding)
+
         Creates a new ``bytes`` object, which is a sequence of integers
         in the range :math:`0 \leq x \leq 255`. This object is *immutable*,
         which means that you *cannot* change its contents after you create it.
 
-           * If no argument is given, this creates an empty ``bytes`` object.
-           * If the ``source`` argument is an integer, this creates a ``bytes``
-             object of zeros. The argument specifies how many zeros.
-           * If ``source`` is a ``bytearray``, ``bytes`` object, or some other
-             iterable of integers, this creates a ``bytes``
-             object with the same byte sequence as the ``source`` argument.
-           * If ``source`` is a string, choose ``'utf8'`` as the ``encoding``
-             argument. Then this creates a ``bytes`` object containing the
-             encoded string.
+        If no argument is given, this creates an empty ``bytes`` object.
+
+        Arguments:
+            integer (int): If the argument is a single integer, this creates
+              a ``bytes`` object of zeros. The argument specifies how many.
+            iterable (iter): If the argument is a ``bytearray``, ``bytes``
+              object, or some other iterable of integers, this creates a ``bytes``
+              object with the same byte sequence as the argument.
+            string (str): If the argument is a string, this creates a ``bytes``
+              object containing the encoded string.
+            encoding (str): Specifies which encoding to use for the ``string``
+              argument. Only ``"utf-8"``  is supported.
         """
 
 
@@ -208,21 +218,39 @@ class bytearray:
 
     def __init__(self, *args):
         r"""
+        bytearray(​)
+        bytearray(integer)
+        bytearray(iterable)
+        bytearray(string)
+
         Creates a new ``bytearray`` object, which is a sequence of integers
         in the range :math:`0 \leq x \leq 255`. This object is *mutable*, which
         means that you *can* change its contents after you create it.
 
-           * If no argument is given, this creates an empty ``bytearray``.
-           * If the ``source`` argument is an integer, this creates a ``bytearray``
-             of zeros. The argument specifies how many zeros.
-           * For all other valid ``source`` arguments, this creates a bytearray with
-             the same byte sequence as the given ``source`` argument.
+        If no argument is given, this creates an empty ``bytearray`` object.
+
+        Arguments:
+            integer (int): If the argument is a single integer, this creates
+              a ``bytearray`` object of zeros. The argument specifies how many.
+            iterable (iter): If the argument is a ``bytearray``, ``bytes``
+              object, or some other iterable of integers, this creates
+              a ``bytearray`` object with the same byte sequence as the argument.
+            string (str): If the argument is a string, this creates
+              a ``bytearray`` object containing the encoded string.
         """
 
 
 def callable(object: Any) -> _bool:
     """
-    Returns ``True`` if the object argument appears callable, ``False`` if not.
+    callable(object) -> bool
+
+    Checks if an object is callable.
+
+    Arguments:
+        object: Object to check.
+
+    Returns:
+        ``True`` if the object argument appears callable, ``False`` if not.
     """
 
 
@@ -306,6 +334,8 @@ class dict:
         dict(mapping, **kwargs)
         dict(iterable, **kwargs)
 
+        Creates a dictionary object.
+
         See the standard
         `Python documentation
         <https://docs.python.org/3/library/stdtypes.html#mapping-types-dict>`_
@@ -325,8 +355,19 @@ def dir(object: Any) -> List[_str]:
 
 def dir(*args) -> List[_str]:
     """
-    Without arguments, return the list of names in the current local scope. With
-    an argument, attempt to return a list of valid attributes for that object.
+    dir() -> List[str]
+    dir(object) -> List[str]
+
+    Gets a list of attributes of an object.
+
+    If no object argument is given, this function gets the list of names in the
+    current local scope.
+
+    Arguments:
+        object: Object to check for valid attributes.
+
+    Returns:
+        List of object attributes or list of names in current local scope.
     """
 
 
@@ -342,8 +383,21 @@ def divmod(a: _float, b: _float) -> Tuple[_float, _float]:
 
 def divmod(a, b):
     """
-    Takes two (non complex) numbers as arguments and returns a pair of numbers
-    consisting of their quotient and remainder when using integer division.
+    divmod(a, b) -> Tuple[int, int]
+
+    Gets the quotient and remainder for dividing two integers.
+
+    See the standard `Python divmod documentation
+    <https://docs.python.org/3/library/functions.html#divmod>`_ for
+    the expected behavior when ``a`` or ``b`` are floating point numbers
+    instead.
+
+    Arguments:
+        a (int): Numerator.
+        b (int): Denominator.
+
+    Returns:
+        A tuple with the quotient ``a // b`` and the remainder ``a % b``.
     """
 
 
@@ -358,9 +412,11 @@ class enumerate:
 
     def __init__(self, *args) -> None:
         """
-        Returns an enumerate object.
+        enumerate(iterable, start=0)
 
-        Equivalent to::
+        Enumerates an existing iterator by adding a numeric index.
+
+        This function is equivalent to::
 
             def enumerate(sequence, start=0):
                 n = start
@@ -387,12 +443,23 @@ def eval(expression: _str, globals: _dict, locals: Mapping) -> Any:
 
 def eval(*args):
     """
-    The arguments are a string and optional globals and locals. If provided,
-    ``globals`` must be a dictionary. If provided, ``locals`` can be any mapping
-    object.
+    eval(expression) -> Any
+    eval(expression, globals) -> Any
+    eval(expression, globals, locals) -> Any
 
-    The return value is the result of the evaluated expression. Syntax errors
-    are reported as exceptions.
+    Evaluates the result of an expression.
+
+    Syntax errors are reported as exceptions.
+
+    Arguments:
+        expression (str): Expression to evaluate result of.
+        globals (dict): If given, this controls what functions are available
+            for use in the expression. By default the global scope is accessible.
+        locals (dict): If given, this controls what functions are available
+            for use in the expression. Defaults to the same as ``globals``.
+
+    Returns:
+        The value obtained by executing the expression.
     """
 
 
@@ -413,7 +480,20 @@ def exec(object: Any, globals: _dict, locals: Mapping) -> None:
 
 def exec(*args):
     """
-    This function supports dynamic execution of Python code.
+    exec(expression)
+    exec(expression, globals)
+    exec(expression, globals, locals)
+
+    Executes MicroPython code.
+
+    Syntax errors are reported as exceptions.
+
+    Arguments:
+        expression (str): Code to be executed.
+        globals (dict): If given, this controls what functions are available
+            for use in the expression. By default the global scope is accessible.
+        locals (dict): If given, this controls what functions are available
+            for use in the expression. Defaults to the same as ``globals``.
     """
 
 
@@ -456,26 +536,58 @@ def getattr(object: Any, name: _str, default: Any) -> Any:
 
 def getattr(*args):
     """
-    Returns the value of the named attribute of object.
+    getattr(object, name) -> Any
+    getattr(object, name, default) -> Any
+
+    Looks up the attribute called ``name`` in the given ``object``.
+
+    Arguments:
+        object: Object in which to look for the attribute.
+        name (str): Name of the attribute.
+        default: Object to return if the attribute is not found.
+
+    Returns:
+        Returns the value of the named attribute.
     """
 
 
 def globals() -> Dict[_str, Any]:
     """
-    Return a dictionary representing the current global symbol table.
+    globals() -> dict
+
+    Gets a dictionary representing the current global symbol table.
+
+    Returns:
+        The dictionary of globals.
     """
 
 
 def hasattr(object: Any, name: _str) -> _bool:
     """
-    The result is ``True`` if the string is the name of one of the object’s
-    attributes, ``False`` if not.
+    hasattr(object, name) -> bool
+
+    Checks if an attribute exists on an object.
+
+    Arguments:
+        object: Object in which to look for the attribute.
+        name (str): Name of the attribute.
+
+    Returns:
+        ``True`` if an attribute by that name exists, ``False`` if not.
     """
 
 
 def hash(object: Any) -> _int:
     """
-    Returns the hash value of the object (if it has one).
+    hash(object) -> int
+
+    Gets the hash value of an object, if the object supports it.
+
+    Arguments:
+        object: Object for which to get a hash value.
+
+    Returns:
+        The hash value.
     """
 
 
@@ -491,8 +603,16 @@ def help(object: Any) -> None:
 
 def help(*args) -> None:
     """
-    Prints help for the ``object``. If no argument is given, prints general help.
-    If object is ``'modules'``, prints available modules.
+    help()
+    help(object)
+
+    Get information about an object.
+
+    If no arguments are given, this function prints instructions to operate the
+    REPL. If the argument is ``"modules"``, it prints the available modules.
+
+    Arguments:
+        object: Object for which to print help information.
     """
 
 
@@ -511,10 +631,18 @@ def hex(x: int) -> _str:
     """
 
 
-def id() -> _int:
+def id(object: Any) -> _int:
     """
-    Returns the “identity” of an object. This is an integer which is guaranteed
+    id(object) -> int
+
+    Gets the *identity* of an object. This is an integer which is guaranteed
     to be unique and constant for this object during its lifetime.
+
+    Arguments:
+        object: Object of which to get the identifier.
+
+    Returns:
+        The identifier.
     """
 
 
@@ -605,26 +733,60 @@ class int:
 
 def isinstance(object: Any, classinfo: Union[_type, Tuple[_type]]) -> _bool:
     """
-    Returns ``True`` if the ``object`` argument is an instance of the ``classinfo``
-    argument, or of a subclass thereof.
+    isinstance(object, classinfo) -> bool
+
+    Checks if an object is an instance of a certain class.
+
+    Arguments:
+        object: Object to check the type of.
+        classinfo (type or tuple): Class information.
+
+    Returns:
+        ``True`` if the ``object`` argument is an instance of the ``classinfo``
+        argument, or of a subclass thereof.
     """
 
 
 def issubclass(cls: _type, classinfo: Union[_type, Tuple[_type]]) -> _bool:
     """
-    Returns ``True`` if ``cls`` is a subclass of ``classinfo``.
+    issubclass(cls, classinfo) -> bool
+
+    Checks if one class is a subclass of another class.
+
+    Arguments:
+        cls: Class type.
+        classinfo (type or tuple): Class information.
+
+    Returns:
+        ``True`` if ``cls`` is a subclass of ``classinfo``.
     """
 
 
 def iter(object: Union[Iterable, Sequence]) -> Iterator:
     """
-    Returns an iterator object.
+    iter(object) -> Iterator
+
+    Gets the iterator of the object if available.
+
+    Arguments:
+        object: Object for which to get the iterator.
+
+    Returns:
+        The iterator.
     """
 
 
 def len(s: Sequence) -> _int:
     """
-    Returns the length (the number of items) of an object.
+    len(s) -> int
+
+    Gets the length (the number of items) of an object.
+
+    Arguments:
+        s (Sequence): The sequence of which to get the length.
+
+    Returns:
+        The length.
     """
 
 
@@ -639,20 +801,49 @@ class list:
 
     def __init__(self, *args) -> None:
         """
-        Creates a new list.
+        list(​)
+        list(iterable)
+
+        Creates a new list. If no argument is given, this creates an empty
+        ``list`` object.
+
+        A list is *mutable*, which means that you *can* change its contents
+        after you create it.
+
+        Arguments:
+            iterable (iter): Iterable from which to build the list.
         """
 
 
 def locals() -> _dict:
     """
-    Updates and returns a dictionary representing the current local symbol table.
+    locals() -> dict
+
+    Gets a dictionary representing the current local symbol table.
+
+    Returns:
+        The dictionary of locals.
     """
 
 
 def map(function: Callable, iterable: Iterable, *args: Any) -> Iterator:
     """
-    Returns an iterator that applies function to every item of iterable,
-    yielding the results.
+    map(function, iterable) -> Iterator
+    map(function, iterable1, iterable2...) -> Iterator
+
+    Creates a new iterator that applies the given function to each item in the
+    given iterable and yields the results.
+
+    Arguments:
+        function (callable): Function that computes a result for one item in the
+            iterable(s). The number of arguments to this function must match
+            the number of iterables given.
+        iterable (iter): One or more source interables from which to draw data.
+            With multiple iterables, the iterator stops when the shortest
+            iterable is exhausted.
+
+    Returns:
+        The new, mapped iterator.
     """
 
 
@@ -668,7 +859,15 @@ def max(arg1: Any, arg2: Any, *args: Any) -> Any:
 
 def max(*args):
     """
-    Returns the largest item in an iterable or the largest of two or more arguments.
+    max(iterable) -> Any
+    max(arg1, arg2, ....) -> Any
+
+    Gets the object with largest value.
+
+    The argument may be a single iterable, or any number of objects.
+
+    Returns:
+        The object with the largest value.
     """
 
 
@@ -684,32 +883,37 @@ def min(arg1: Any, arg2: Any, *args: Any) -> Any:
 
 def min(*args):
     """
-    Returns the smallest item in an iterable or the smallest of two or more arguments.
+    min(iterable) -> Any
+    min(arg1, arg2, ....) -> Any
+
+    Gets the object with smallest value.
+
+    The argument may be a single iterable, or any number of objects.
+
+    Returns:
+        The object with the smallest value.
     """
 
 
-@overload
 def next(iterator: Iterator) -> Any:
-    ...
-
-
-@overload
-def next(iterator: Iterator, default: Any) -> Any:
-    ...
-
-
-def next(*args):
     """
+    next(iterator) -> Any
+
     Retrieves the next item from the iterator by calling its ``__next__()`` method.
-    If ``default`` is given, it is returned if the iterator is exhausted,
-    otherwise ``StopIteration`` is raised.
+
+    Arguments:
+        iterator (iter): Initialized generator object from which to draw the next
+            value.
+
+    Returns:
+        The next value from the generator.
     """
 
 
 class object:
     def __init__(self) -> None:
         """
-        Return a new featureless object.
+        Creates a new, featureless object.
         """
 
 
@@ -745,23 +949,20 @@ def ord(c: _str) -> _int:
     """
 
 
-@overload
-def pow(base: _int, exp: _int) -> Union[_int, _float]:
-    ...
-
-
-@overload
-def pow(base: _int, exp: _int, mod: _int) -> Union[_int, _float]:
-    ...
-
-
-def pow():
+def pow(base: Union[_int, _float], exp: Union[_int, _float]) -> Union[_int, _float]:
     """
-    Returns ``base`` to the power ``exp``; if ``mod`` is present, returns ``base``
-    to the power ``exp``, modulo ``mod``.
+    pow(base, exp) -> Number
 
-    The two-argument form ``pow(base, exp)`` is equivalent to using the power
-    operator: ``base ** exp``.
+    Raises the base to the given exponent: :math:`\\text{base}^{\\mathrm{exp}}`.
+
+    This is the same as doing ``base ** exp``.
+
+    Arguments:
+        base (Number): The base.
+        exp (Number): The exponent.
+
+    Returns:
+        The result.
     """
 
 
@@ -784,9 +985,9 @@ def print(*args):
         objects: Zero or more objects to print.
 
     Keyword Arguments:
-        sep: This is printed between objects, if there is more than one.
-        end: This is printed after the last object.
-        file: By default, the result is printed in the terminal window. This
+        sep (str): This is printed between objects, if there is more than one.
+        end (str): This is printed after the last object.
+        file (FileIO): By default, the result is printed in the terminal window. This
               argument lets you print it to a file instead, if files are
               supported.
     """
@@ -807,7 +1008,18 @@ class range:
 
     def __init__(self, *args) -> None:
         """
-        Rather than being a function, ``range`` is actually an immutable sequence type.
+        range(stop)
+        range(start, stop)
+        range(start, stop, step)
+
+        Creates a generator that yields values from ``start`` up to
+        ``stop``, with increments of ``step``.
+
+        Arguments:
+            start (int): Starting value. Defaults to ``0`` if only one argument is given.
+            stop (int): Endpoint. This value is *not* included.
+            step (int): Increment between values. Defaults to ``1`` if only one
+                or two arguments are given.
         """
 
 
@@ -826,7 +1038,16 @@ def repr(x: Any) -> _str:
 
 def reversed(seq: Sequence) -> Iterator:
     """
-    Returns a reverse iterator.
+    reversed(seq) -> Iterator
+
+    Gets an iterator that yields the values from the sequence in the reverse, if
+    supported.
+
+    Arguments:
+        seq: Sequence from which to draw samples.
+
+    Returns:
+        Iterator that yields values in reverse order, starting with the last value.
     """
 
 
@@ -842,42 +1063,39 @@ def round(number: _float, ndigits: _int) -> _float:
 
 def round(*args):
     """
-    Returns ``number`` rounded to ``ndigits`` precision after the decimal point.
-    If ``ndigits`` is omitted or is ``None``, it returns the nearest integer to
-    its input.
+    round(number) -> int
+    round(number, ndigits) -> float
 
-    .. tip:: To print a number use a format function instead. Since many floating
-        point numbers don't have exact representations, :meth:`round` often gives
-        unexpected results!
+    Round a number to a given number of digits after the decimal point.
 
-        Example::
+    If ``ndigits`` is omitted or ``None``, it returns the nearest integer.
 
-            # print two decimal places
-            print('my number: %.2f' % number)
-            print('my number: {:.2f}'.format(number))
+    Rounding with one or more digits after the decimal point will not always
+    truncate trailing zeros. To print numbers nicely, format strings instead::
+
+        # print two decimal places
+        print('my number: %.2f' % number)
+        print('my number: {:.2f}'.format(number))
+        print(f'my number: {number:.2f}')
+
+    Arguments:
+        number (float): The number to be rounded.
+        ndigits (int): The number of digits remaining after the decimal point.
     """
-
-
-class set:
-    @overload
-    def __init__(self) -> None:
-        ...
-
-    @overload
-    def __init__(self, iterable: Iterable) -> None:
-        ...
-
-    def __init__(self, *args) -> None:
-        """
-        Returns a new set object, optionally with elements taken from ``iterable``.
-        """
 
 
 def setattr(object: Any, name: _str, value: Any) -> None:
     """
-    Assigns the value to the attribute, provided the object allows it.
+    setattr(object, name, value)
+
+    Assigns a value to an attribute, provided that the object allows it.
 
     This is the counterpart of :meth:`getattr`.
+
+    Arguments:
+        object: Object in which to store the attribute.
+        name (str): Name of the attribute.
+        value: Value to store.
     """
 
 
@@ -896,17 +1114,31 @@ class slice:
 
     def __init__(self, *args) -> None:
         """
-        Returns a slice object representing the set of indices specified by
-        ``range(start, stop, step)``.
+        slice(​)
 
-        Slice objects are also generated when extended indexing syntax is used.
-        For example: ``a[start:stop:step]`` or ``a[start:stop, i]``.
+        Creating instances of this class is not supported.
+
+        Use indexing syntax instead. For
+        example: ``a[start:stop:step]`` or ``a[start:stop, i]``.
         """
 
 
 def sorted(iterable: Iterable, key=None, reverse=False) -> List:
     """
-    Returns a new sorted list from the items in ``iterable``.
+    Sorts objects.
+
+    Arguments:
+        iterable (iter): Objects to be sorted. This can also be a generator that
+            yield a finite number of objects.
+        key (callable): Function ``def(item) -> int`` that maps an object to a
+            numerical value. This is used to figure out the order of the sorted
+            items.
+        reverse (bool): Whether to sort in reverse, putting the highest value
+            first.
+
+
+    Returns:
+        A new list with the sorted items.
     """
 
 
@@ -929,7 +1161,20 @@ class str:
 
     def __init__(self) -> None:
         """
-        Return a :class:`str` version of object.
+        str(​)
+        str(object)
+        str(object, encoding)
+
+        Gets the string representation of an object.
+
+        If no argument is given, this creates an empty ``str`` object.
+
+        Arguments:
+            object: If only this argument is given, this returns the stirng
+              representation of the object.
+            encoding (str): If the first argument is a ``bytearray`` or ``bytes``
+              object and the encoding argument is ``"utf-8"``, this will decode
+              the byte data to get a string representation.
         """
 
 
@@ -945,8 +1190,17 @@ def sum(iterable: Iterable, start: _int) -> _int:
 
 def sum(*args):
     """
-    Sums ``start`` and the items of an ``iterable`` from left to right and
-    returns the total.
+    sum(iterable) -> Number
+    sum(iterable, start) -> Number
+
+    Sums the items from the iterable and the start value.
+
+    Arguments:
+        iterable (iter): Values to be summed, starting with the first value.
+        start (Number): Value added to the total.
+
+    Returns:
+        The total sum.
     """
 
 
@@ -967,8 +1221,15 @@ def super(type: _type, object_or_type: Any) -> _type:
 
 def super(*args):
     """
-    Returns am object that delegates method calls to a parent or sibling class
-    of ``type``.
+    super() -> type
+    super(type) -> type
+    super(type, object_or_type) -> type
+
+    Gets an object that delegates method calls to a parent, or a sibling class
+    of the given type.
+
+    Returns:
+        The matching `super()` object.
     """
 
 
@@ -983,31 +1244,46 @@ class tuple:
 
     def __init__(self, *args) -> None:
         """
-        Rather than being a function, :class:`tuple` is actually an immutable
-        sequence type.
+        tuple(​)
+        tuple(iterable)
+
+        Creates a new tuple. If no argument is given, this creates an empty
+        ``tuple`` object.
+
+        A tuple is *immutable*, which means that you *cannot* change its
+        contents after you create it.
+
+        Arguments:
+            iterable (iter): Iterable from which to build the tuple.
         """
 
 
 class type:
     def __init__(self, object: Any) -> None:
-        """
-        With one argument, returns the type of an ``object``.
+        """type(object)
+
+        Gets the type of an object. This can be used to check if an object
+        is an instance of a particular class.
+
+        Arguments:
+            object: Object of which to check the type.
         """
 
 
 def zip(*iterables: Iterable) -> Iterable[Tuple]:
     """
-    Returns an iterator of tuples, where the i-th tuple contains the i-th
+    zip(iter_a, iter_b, ...) -> Iterable[Tuple]
+
+    Returns an iterator of tuples, where the *i*-th tuple contains the *i*-th
     element from each of the argument sequences or iterables. The iterator
     stops when the shortest input iterable is exhausted.
 
     With a single iterable argument, it returns an iterator of 1-tuples.
     With no arguments, it returns an empty iterator.
 
-    Equivalent to::
+    This functionality is equivalent to::
 
         def zip(*iterables):
-            # zip('ABCD', 'xy') --> Ax By
             sentinel = object()
             iterators = [iter(it) for it in iterables]
             while iterators:
@@ -1018,6 +1294,16 @@ def zip(*iterables: Iterable) -> Iterable[Tuple]:
                         return
                     result.append(elem)
                 yield tuple(result)
+
+    Arguments:
+        iter_a (iter): The first iterable. This provides the first value for
+            each of the yielded tuples.
+        iter_b (iter): The second iterable. This provides the second value in
+            each of the yielded tuples. And so on.
+
+    Returns:
+        A new iterator that yields tuples containing the values of the
+        individual iterables.
     """
 
 
@@ -1114,7 +1400,7 @@ class KeyError(LookupError):
 
 class KeyboardInterrupt(BaseException):
     """
-    Raised when the user hits the interrupt key (normally :kbd:`Control-C`).
+    Raised when the user hits the interrupt key (normally :kbd:`Ctrl` :kbd:`C`).
     """
 
 

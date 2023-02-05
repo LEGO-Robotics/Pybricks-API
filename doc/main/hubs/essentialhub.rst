@@ -3,16 +3,8 @@
 Essential Hub
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. figure:: ../../main/images/essentialhub.png
-    :height: 15 em
-
-
-.. note:: Pybricks support for this hub is in beta.
-            Check the `installation instructions`_ to try it out.
-            The following functions may change before the final release.
-
-.. _installation instructions: https://pybricks.com/install/
-
+.. figure:: ../../main/cad/output/hub-essential.png
+    :width: 30%
 
 .. autoclass:: pybricks.hubs.EssentialHub
     :no-members:
@@ -64,6 +56,10 @@ Essential Hub
     .. automethod:: pybricks.hubs::EssentialHub.system.set_stop_button
 
     .. automethod:: pybricks.hubs::EssentialHub.system.name
+
+    .. automethod:: pybricks.hubs::EssentialHub.system.storage
+
+        You can store up to 512 bytes of data on this hub.
 
     .. automethod:: pybricks.hubs::EssentialHub.system.shutdown
 

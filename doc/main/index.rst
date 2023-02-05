@@ -1,103 +1,53 @@
 Pybricks Documentation
 ==================================================================
 
+`Pybricks <https://pybricks.com/>`_ is Python coding for smart LEGO® hubs.
+Run MicroPython scripts
+directly on the hub, and get full control of your motors and sensors.
+
+Pybricks runs on LEGO® BOOST, City, Technic, MINDSTORMS®, and SPIKE®. You
+can code using Windows, Mac, Linux, Chromebook, and Android.
+
+Click on any device below to see its documentation. Use the menu on the left
+to find documentation for additional modules. You may need to click the ☰ icon
+above to reveal this menu.
+
 .. only:: main
 
-   `Pybricks <https://pybricks.com/>`_ is Python coding for smart LEGO® hubs.
-   Run MicroPython scripts
-   directly on the hub, and get full control of your motors and sensors.
-
-   Pybricks runs on LEGO® BOOST, City, Technic, MINDSTORMS®, and SPIKE®. You
-   can code using Windows, Mac, Linux, Chromebook, and Android.
-
-   **What's on this page?**
-
-   This page provides API documentation and short example snippets. If you're
-   new to Pybricks, or if you're looking for bigger example projects, check out
-   the `Pybricks website`_ instead.
-
+   .. note:: You are viewing the stand-alone version of the documentation. To
+             learn more about Pybricks and to start coding, visit
+             the `Pybricks website`_
 
    .. note:: Are you using LEGO MINDSTORMS EV3? Check out the
             `EV3 documentation`_ instead.
 
-
-   **Installation**
-
-   To run Pybricks MicroPython scripts, you must update the firmware on the
-   hub. To get started, click one of the platforms below.
-
-   .. list-table::
-
-      * - **Technic, City, and BOOST Move Hubs**
-        - **SPIKE Essential/Prime, and MINDSTORMS Inventor Hubs**
-
-      * - .. figure:: ../main/images/powereduphubs.png
-            :target: https://pybricks.com/install/technic-boost-city/
-
-        - .. figure:: ../main/images/primeinventorhub.png
-            :target: https://pybricks.com/install/spike-mindstorms/
-
-   Once installed, Pybricks works the same for all hubs.
-   check out the Pybricks modules in the left hand menu to see what
-   you can do.
-
-   **Get involved!**
-
-   Got questions or issues? Please share your
-   findings on our `support page`_ so we can make Pybricks even better.
-   *Thank you!*
-
-.. only:: ide
-
-   .. note::
-
-      **You are using a new beta version of Pybricks!**
-
-      This is great for trying the very latest features, but some things
-      might not work.
-
-      If in doubt, use the `latest stable release`_. Please report any
-      issues via our `support page`_. Thanks!
-
-   To begin, install the Pybricks firmware on your hub. Check
-   `pybricks.com/install`_ to learn how.
-
-   Use the ☰ menu to navigate all available classes, methods, and tools. A few
-   commonly used devices and classes are listed below for quick reference.
-
-   .. rubric:: Programmable hubs
-
-   .. figure:: ../main/images/hubsoverview.png
-      :width: 100 %
-      :target: hubs/index.html
-
-   .. rubric:: Powered Up motors and sensors
-
-   .. figure:: ../main/images/pupdevicesoverview.png
-      :width: 100 %
-      :target: pupdevices/index.html
-
-
-
-
-.. _support page: https://github.com/pybricks/support/issues/
 .. _EV3 documentation: https://pybricks.com/ev3-micropython/
 .. _Pybricks website: https://pybricks.com/
-.. _pybricks.com/install: https://pybricks.com/install/
-.. _latest stable release: https://www.code.pybricks.com/
+
+.. rubric:: Programmable hubs
+
+.. figure:: ../main/cad/output/hub-all.png
+   :width: 100 %
+   :target: hubs/index.html
+
+.. rubric:: Powered Up motors and sensors
+
+.. figure:: ../main/cad/output/pupdevice-all.png
+   :width: 100 %
+   :target: pupdevices/index.html
+
+.. figure:: ../main/cad/output/pupdevice-motors.png
+   :width: 100 %
+   :target: pupdevices/motor.html
+
+.. figure:: ../main/cad/output/pupdevice-dcmotors.png
+   :width: 70 %
+   :target: pupdevices/dcmotor.html
 
 .. toctree::
     :maxdepth: 1
     :caption: Table of contents
     :hidden:
-
-.. toctree::
-    :maxdepth: 1
-    :caption: Pybricks
-    :hidden:
-
-    Home page <https://pybricks.com>
-    Installation <https://pybricks.com/install/>
 
 .. toctree::
    :maxdepth: 1
@@ -123,7 +73,9 @@ Pybricks Documentation
    micropython/micropython
    micropython/uerrno
    micropython/uio
+   micropython/ujson
    micropython/umath
    micropython/urandom
    micropython/uselect
+   micropython/ustruct
    micropython/usys

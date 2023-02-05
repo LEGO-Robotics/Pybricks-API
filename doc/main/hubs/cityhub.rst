@@ -3,8 +3,8 @@
 City Hub
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. figure:: ../../main/images/cityhub.png
-    :height: 15 em
+.. figure:: ../../main/cad/output/hub-city.png
+    :width: 30%
 
 .. autoclass:: pybricks.hubs.CityHub
     :no-members:
@@ -32,6 +32,12 @@ City Hub
     .. automethod:: pybricks.hubs::CityHub.system.set_stop_button
 
     .. automethod:: pybricks.hubs::CityHub.system.name
+
+    .. automethod:: pybricks.hubs::CityHub.system.storage
+
+        You can store up to 128 bytes of data on this hub. The data is cleared
+        when you update the Pybricks firmware or if you restore the original
+        firmware.
 
     .. automethod:: pybricks.hubs::CityHub.system.shutdown
 

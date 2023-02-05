@@ -1,7 +1,7 @@
 .. pybricks-requirements::
 
-:mod:`robotics <pybricks.robotics>` -- Robotics
-======================================================
+:mod:`robotics <pybricks.robotics>` -- Robotics and drive bases
+===============================================================
 
 .. automodule:: pybricks.robotics
     :no-members:
@@ -10,7 +10,7 @@
 .. autoclass:: pybricks.robotics.DriveBase
     :no-members:
 
-    .. rubric:: Driving for a given distance or by an angle
+    .. rubric:: Driving by a given distance or angle
 
     Use the following commands to drive a given distance, or turn by a
     given angle.
@@ -25,6 +25,8 @@
     .. automethod:: pybricks.robotics.DriveBase.curve
 
     .. automethod:: pybricks.robotics.DriveBase.settings
+
+    .. automethod:: pybricks.robotics.DriveBase.done
 
     .. rubric:: Drive forever
 
@@ -48,12 +50,21 @@
 
     .. automethod:: pybricks.robotics.DriveBase.reset
 
+    .. automethod:: pybricks.robotics.DriveBase.stalled
+
+    .. _measuring:
+
     .. rubric:: Measuring and validating the robot dimensions
 
     As a first estimate, you can measure the ``wheel_diameter`` and the
     ``axle_track`` with a ruler. Because it is hard to see where the wheels
     effectively touch the ground, you can estimate the ``axle_track`` as
     the distance between the midpoint of the wheels.
+
+    If you don't have a ruler, you can use a LEGO beam to measure. The
+    center-to-center distance of the holes is 8 mm. For some tyres, the
+    diameter is printed on the side. For example, 62.4 x 20 means that the
+    diameter is 62.4mm and that the width is 20 mm.
 
     In practice, most wheels compress slightly under the weight of your robot.
     To verify, make your robot drive 1000 mm using ``my_robot.straight(1000)``
@@ -80,15 +91,11 @@
 
     .. rubric:: Using the DriveBase motors individually
 
-    Suppose you make a :class:`.DriveBase` object using two ``Motor`` objects called
-    ``left_motor`` and ``right_motor``. You **cannot** use these motors
-    individually while the DriveBase is **active**.
-
-    The DriveBase is active if it is driving, but also when it is actively
-    holding the wheels in place after a :meth:`.straight` or
-    :meth:`.turn` command.
-    To deactivate the :class:`.DriveBase`, call :meth:`.stop`.
-
+    After creating a :class:`.DriveBase` object, you can still use its two
+    motors individually. If you start one motor, the other motor will
+    automatically stop. Likewise, if a motor is already running and you make
+    the drive base move, the original maneuver is cancelled and the drive base
+    will take over.
 
     .. rubric:: Advanced settings
 
@@ -104,3 +111,16 @@
 
     .. autoattribute:: pybricks.robotics.DriveBase.heading_control
         :annotation:
+
+    .. versionchanged:: 3.2
+
+        The :meth:`done` and :meth:`stalled` methods have been moved.
+
+Examples
+-------------------
+
+Driving straight and turning in place
+**********************************************
+
+.. literalinclude::
+    ../../examples/pup/robotics/drivebase_basics.py

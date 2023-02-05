@@ -1,7 +1,7 @@
 .. pybricks-requirements::
 
-:mod:`hubs <pybricks.hubs>` -- Programmable hubs
-================================================
+:mod:`hubs <pybricks.hubs>` -- Built-in hub functions
+=====================================================
 
 .. module:: pybricks.hubs
 
@@ -17,36 +17,36 @@
 
 .. pybricks-classlink:: MoveHub
 
-.. figure:: ../../main/images/movehub.png
-    :height: 10 em
+.. figure:: ../../main/cad/output/hub-move.png
+    :width: 40%
     :target: movehub.html
 
 .. pybricks-classlink:: CityHub
 
-.. figure:: ../../main/images/cityhub.png
-    :height: 10 em
+.. figure:: ../../main/cad/output/hub-city.png
+    :width: 25%
     :target: cityhub.html
 
 .. pybricks-classlink:: TechnicHub
 
-.. figure:: ../../main/images/technichub.png
-    :height: 10 em
+.. figure:: ../../main/cad/output/hub-technic.png
+    :width: 35%
     :target: technichub.html
-
-.. pybricks-classlink:: PrimeHub
-
-.. figure:: ../../main/images/primehub.png
-    :height: 10 em
-    :target: primehub.html
 
 .. pybricks-classlink:: InventorHub PrimeHub
 
-.. figure:: ../../main/images/inventorhub.png
-    :height: 10 em
+.. figure:: ../../main/cad/output/hub-inventor.png
+    :width: 35%
+    :target: primehub.html
+
+.. pybricks-classlink:: PrimeHub
+
+.. figure:: ../../main/cad/output/hub-prime.png
+    :width: 35%
     :target: primehub.html
 
 .. pybricks-classlink:: EssentialHub
 
-.. figure:: ../../main/images/essentialhub.png
-    :height: 10 em
+.. figure:: ../../main/cad/output/hub-essential.png
+    :width: 25%
     :target: essentialhub.html

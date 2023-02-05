@@ -6,7 +6,9 @@ Tests for correct code completion of import statements.
 """
 
 import json
-from pybricks_jedi import CompletionItem, complete
+
+import pytest
+from pybricks_jedi import CompletionItem, complete, update_user_modules
 
 
 def test_from():
@@ -18,9 +20,37 @@ def test_from():
         "pybricks",
         "uerrno",
         "uio",
+        "ujson",
         "umath",
         "urandom",
         "uselect",
+        "ustruct",
+        "usys",
+    ]
+
+
+@pytest.fixture
+def user_modules():
+    update_user_modules(["jedi", "pytest"])
+    yield
+    update_user_modules([])
+
+
+def test_from_with_user_modules(user_modules):
+    code = "from "
+    completions: list[CompletionItem] = json.loads(complete(code, 1, len(code) + 1))
+    assert [c["insertText"] for c in completions] == [
+        "jedi",
+        "micropython",
+        "pybricks",
+        "pytest",
+        "uerrno",
+        "uio",
+        "ujson",
+        "umath",
+        "urandom",
+        "uselect",
+        "ustruct",
         "usys",
     ]
 
@@ -149,6 +179,8 @@ def test_from_micropython_import():
     completions: list[CompletionItem] = json.loads(complete(code, 1, len(code) + 1))
     assert [c["insertText"] for c in completions] == [
         "const",
+        "heap_lock",
+        "heap_unlock",
         "kbd_intr",
         "mem_info",
         "opt_level",
@@ -181,6 +213,19 @@ def test_from_uio_import():
         "BytesIO",
         "FileIO",
         "StringIO",
+    ]
+
+
+def test_from_ujson_import():
+    code = "from ujson import "
+    completions: list[CompletionItem] = json.loads(complete(code, 1, len(code) + 1))
+    assert [c["insertText"] for c in completions] == [
+        "decode",  # FIXME: Shouldn't be here
+        "dump",
+        "dumps",
+        "encode",  # FIXME: Shouldn't be here
+        "load",
+        "loads",
     ]
 
 
@@ -236,8 +281,8 @@ def test_from_uselect_import():
     code = "from uselect import "
     completions: list[CompletionItem] = json.loads(complete(code, 1, len(code) + 1))
     assert [c["insertText"] for c in completions] == [
-        "poll",
         "Poll",
+        "poll",
         "POLLERR",
         "POLLHUP",
         "POLLIN",
@@ -245,11 +290,26 @@ def test_from_uselect_import():
     ]
 
 
+def test_from_ustruct_import():
+    code = "from ustruct import "
+    completions: list[CompletionItem] = json.loads(complete(code, 1, len(code) + 1))
+    assert [c["insertText"] for c in completions] == [
+        "calcsize",
+        "pack",
+        "pack_into",
+        "unpack",
+        "unpack_from",
+    ]
+
+
 def test_from_usys_import():
     code = "from usys import "
     completions: list[CompletionItem] = json.loads(complete(code, 1, len(code) + 1))
     assert [c["insertText"] for c in completions] == [
+        "implementation",
         "stderr",
         "stdin",
         "stdout",
+        "version",
+        "version_info",
     ]

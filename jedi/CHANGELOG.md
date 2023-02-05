@@ -4,8 +4,45 @@
 
 ## Unreleased
 
+## 1.7.0 - 2022-12-28
+
+### Added
+- Added `update_user_modules()` function for filtering on user modules.
+
+### Fixed
+- Fixed code completion for builtin types.
+- Fixed code completion for names starting with `_`.
+
+## 1.6.0 - 2022-12-09
+
+### Changed
+- Updated `pybricks` package to v3.2.0c1.
+
+## 1.5.0 - 2022-12-02
+
+### Changed
+- Added `ujson` and `ustruct` modules.
+
+## 1.4.0 - 2022-12-02
+
+### Changed
+- Updated `pybricks` package to v3.2.0b6.
+
+## 1.3.0 - 2022-11-11
+
+### Changed
+- Updated `pybricks` package to v3.2.0b5.
+
+### Fixed
+- Fixed code completion for `Color` and `Icon` classes in `pybricks.parameters`.
+
+## 1.2.0 - 2022-10-21
+
 ### Added
 - Added LICENSE file.
+
+### Changed
+- Updated to pybricks API package v3.2.0b4.
 
 ## 1.1.0 - 2022-06-26
 

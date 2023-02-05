@@ -9,7 +9,7 @@ Motors
 
 .. _fig_ev3motors:
 
-.. figure:: ../main/images/ev3motors_label.png
+.. figure:: ../main/diagrams/ev3motors.png
    :width: 100 %
 
    EV3-compatible motors. The arrows indicate the default positive direction.
@@ -26,6 +26,10 @@ Motors
 
     .. automethod:: pybricks.ev3devices.Motor.reset_angle
 
+    .. automethod:: pybricks.ev3devices.Motor.load
+
+    .. automethod:: pybricks.ev3devices.Motor.stalled
+
     .. rubric:: Stopping
 
     .. automethod:: pybricks.ev3devices.Motor.stop
@@ -34,9 +38,13 @@ Motors
 
     .. automethod:: pybricks.ev3devices.Motor.hold
 
-    .. rubric:: Action
+    .. rubric:: Running forever
 
     .. automethod:: pybricks.ev3devices.Motor.run
+
+    .. automethod:: pybricks.ev3devices.Motor.dc
+
+    .. rubric:: Running by a fixed amount
 
     .. automethod:: pybricks.ev3devices.Motor.run_time
 
@@ -48,30 +56,13 @@ Motors
 
     .. automethod:: pybricks.ev3devices.Motor.run_until_stalled
 
-    .. automethod:: pybricks.ev3devices.Motor.dc
-
-    .. rubric:: Motor status
-
-    .. attribute:: control.scale
-
-        Number of degrees that the motor turns to complete one degree at the
-        output of the gear train. This is the gear ratio determined from the
-        ``gears`` argument when initializing the motor.
-
-    .. automethod:: pybricks.ev3devices.Motor.control.done
-
-    .. automethod:: pybricks.ev3devices.Motor.control.stalled
-
-    .. automethod:: pybricks.ev3devices.Motor.control.load
+    .. automethod:: pybricks.ev3devices.Motor.done
 
     .. rubric:: Motor settings
 
-    You can only change these settings while the controller is stopped. For
-    example, you can change them at the start of your program. Alternatively,
-    first call :meth:`stop() <pybricks.ev3devices.Motor.stop>`, and then change
-    the settings.
-
     .. automethod:: pybricks.ev3devices.Motor.settings
+
+    .. rubric:: Control settings
 
     .. automethod:: pybricks.ev3devices.Motor.control.limits
 
@@ -81,10 +72,16 @@ Motors
 
     .. automethod:: pybricks.ev3devices.Motor.control.stall_tolerances
 
+    .. attribute:: control.scale
+
+        Number of degrees that the motor turns to complete one degree at the
+        output of the gear train. This is the gear ratio determined from the
+        ``gears`` argument when initializing the motor.
+
 Touch Sensor
 ^^^^^^^^^^^^
 
-.. figure:: ../main/images/sensor_ev3_touch.png
+.. figure:: ../main/cad/output/ev3device-touch.png
    :width: 18 %
 
 .. autoclass:: pybricks.ev3devices.TouchSensor
@@ -92,7 +89,7 @@ Touch Sensor
 Color Sensor
 ^^^^^^^^^^^^
 
-.. figure:: ../main/images/sensor_ev3_color.png
+.. figure:: ../main/cad/output/ev3device-color.png
    :width: 18 %
 
 .. autoclass:: pybricks.ev3devices.ColorSensor
@@ -104,7 +101,7 @@ Each method of this class puts the sensor in a different *mode*. Switching
 modes takes about one second on this sensor. To make sure that your program
 runs quickly, use only of these methods in your program.
 
-.. figure:: ../main/images/sensor_ev3_ir.png
+.. figure:: ../main/cad/output/ev3device-infrared.png
    :width: 60 %
 
 .. autoclass:: pybricks.ev3devices.InfraredSensor
@@ -112,7 +109,7 @@ runs quickly, use only of these methods in your program.
 Ultrasonic Sensor
 ^^^^^^^^^^^^^^^^^
 
-.. figure:: ../main/images/sensor_ev3_ultrasonic.png
+.. figure:: ../main/cad/output/ev3device-ultrasonic.png
    :width: 22 %
 
 .. autoclass:: pybricks.ev3devices.UltrasonicSensor
@@ -120,7 +117,7 @@ Ultrasonic Sensor
 Gyroscopic Sensor
 ^^^^^^^^^^^^^^^^^
 
-.. figure:: ../main/images/sensor_ev3_gyro.png
+.. figure:: ../main/cad/output/ev3device-gyro.png
    :width: 18 %
 
 .. autoclass:: pybricks.ev3devices.GyroSensor

@@ -2,6 +2,7 @@ import io
 import json
 import re
 from enum import IntEnum
+from typing import Iterable
 
 import docstring_parser
 import jedi
@@ -21,97 +22,162 @@ PYBRICKS_CODE_PACKAGES = {
     "pybricks.tools",
     "uerrno",
     "uio",
+    "ujson",
     "umath",
     "urandom",
     "uselect",
+    "ustruct",
     "usys",
 }
 
 # Subset of Python builtins included in Pybricks MicroPython.
 PYBRICKS_BUILTINS = {
-    "abs",
-    "all",
-    "any",
-    "ArithmeticError",
-    "AssertionError",
-    "AttributeError",
-    "BaseException",
-    "bin",
-    "bool",
-    "bytearray",
-    "bytes",
-    "callable",
-    "chr",
-    "classmethod",
-    "complex",
-    "dict",
-    "dir",
-    "divmod",
-    "enumerate",
-    "EOFError",
-    "eval",
-    "Exception",
-    "exec",
-    "float",
-    "GeneratorExit",
-    "getattr",
-    "globals",
-    "hasattr",
-    "hash",
-    "help",
-    "hex",
-    "id",
-    "ImportError",
-    "IndentationError",
-    "IndexError",
-    "input",
-    "int",
-    "isinstance",
-    "issubclass",
-    "iter",
-    "KeyboardInterrupt",
-    "KeyError",
-    "len",
-    "list",
-    "locals",
-    "LookupError",
-    "map",
-    "max",
-    "MemoryError",
-    "min",
-    "NameError",
-    "next",
-    "NotImplementedError",
-    "object",
-    "oct",
-    "ord",
-    "OSError",
-    "OverflowError",
-    "pow",
-    "print",
-    "range",
-    "repr",
-    "reversed",
-    "round",
-    "RuntimeError",
-    "set",
-    "setattr",
-    "slice",
-    "sorted",
-    "staticmethod",
-    "StopIteration",
-    "str",
-    "sum",
-    "super",
-    "SyntaxError",
-    "SystemExit",
-    "tuple",
-    "type",
-    "TypeError",
-    "ValueError",
-    "ZeroDivisionError",
-    "zip",
+    "builtins.abs",
+    "builtins.all",
+    "builtins.any",
+    "builtins.ArithmeticError",
+    "builtins.AssertionError",
+    "builtins.AttributeError",
+    "builtins.BaseException",
+    "builtins.bin",
+    "builtins.bool",
+    "builtins.bytearray",
+    "builtins.bytes",
+    "builtins.callable",
+    "builtins.chr",
+    "builtins.classmethod",
+    "builtins.complex",
+    "builtins.dict",
+    "builtins.dir",
+    "builtins.divmod",
+    "builtins.enumerate",
+    "builtins.EOFError",
+    "builtins.eval",
+    "builtins.Exception",
+    "builtins.exec",
+    "builtins.float",
+    "builtins.GeneratorExit",
+    "builtins.getattr",
+    "builtins.globals",
+    "builtins.hasattr",
+    "builtins.hash",
+    "builtins.help",
+    "builtins.hex",
+    "builtins.id",
+    "builtins.ImportError",
+    "builtins.IndentationError",
+    "builtins.IndexError",
+    "builtins.input",
+    "builtins.int",
+    "builtins.isinstance",
+    "builtins.issubclass",
+    "builtins.iter",
+    "builtins.KeyboardInterrupt",
+    "builtins.KeyError",
+    "builtins.len",
+    "builtins.list",
+    "builtins.locals",
+    "builtins.LookupError",
+    "builtins.map",
+    "builtins.max",
+    "builtins.MemoryError",
+    "builtins.min",
+    "builtins.NameError",
+    "builtins.next",
+    "builtins.NotImplementedError",
+    "builtins.object",
+    "builtins.oct",
+    "builtins.ord",
+    "builtins.OSError",
+    "builtins.OverflowError",
+    "builtins.pow",
+    "builtins.print",
+    "builtins.range",
+    "builtins.repr",
+    "builtins.reversed",
+    "builtins.round",
+    "builtins.RuntimeError",
+    "builtins.set",
+    "builtins.setattr",
+    "builtins.slice",
+    "builtins.sorted",
+    "builtins.staticmethod",
+    "builtins.StopIteration",
+    "builtins.str",
+    "builtins.sum",
+    "builtins.super",
+    "builtins.SyntaxError",
+    "builtins.SystemExit",
+    "builtins.tuple",
+    "builtins.type",
+    "builtins.TypeError",
+    "builtins.ValueError",
+    "builtins.ZeroDivisionError",
+    "builtins.zip",
+    "builtins.bytearray.append",
+    "builtins.bytearray.extend",
+    "builtins.dict.clear",
+    "builtins.dict.copy",
+    "builtins.dict.fromkeys",
+    "builtins.dict.get",
+    "builtins.dict.items",
+    "builtins.dict.keys",
+    "builtins.dict.pop",
+    "builtins.dict.popitem",
+    "builtins.dict.setdefault",
+    "builtins.dict.update",
+    "builtins.dict.values",
+    "builtins.int.from_bytes",
+    "builtins.int.to_bytes",
+    "builtins.list.append",
+    "builtins.list.clear",
+    "builtins.list.copy",
+    "builtins.list.count",
+    "builtins.list.extend",
+    "builtins.list.index",
+    "builtins.list.insert",
+    "builtins.list.pop",
+    "builtins.list.remove",
+    "builtins.list.reverse",
+    "builtins.list.sort",
+    "builtins.str.count",
+    "builtins.str.endswith",
+    "builtins.str.find",
+    "builtins.str.format",
+    "builtins.str.index",
+    "builtins.str.isalpha",
+    "builtins.str.isdigit",
+    "builtins.str.islower",
+    "builtins.str.isspace",
+    "builtins.str.isupper",
+    "builtins.str.join",
+    "builtins.str.lower",
+    "builtins.str.lstrip",
+    "builtins.str.replace",
+    "builtins.str.rfind",
+    "builtins.str.rindex",
+    "builtins.str.rsplit",
+    "builtins.str.rstrip",
+    "builtins.str.split",
+    "builtins.str.startswith",
+    "builtins.str.strip",
+    "builtins.str.upper",
+    "builtins.tuple.count",
+    "builtins.tuple.index",
 }
+
+PYBRICKS_BUILTINS_NO_FULLNAME = {"items", "values"}
+
+PYBRICKS_TYPING = {
+    "typing.MutableSequence.append",
+    "typing.MutableSequence.extend",
+    "typing.MutableMapping.pop",
+    "typing.Mapping.get",
+}
+
+MICROPY_NOT_SUPPORTED_DUNDER = {"__doc__", "__package__"}
+
+user_modules = set()
 
 # Types from monaco editor
 
@@ -241,10 +307,14 @@ class SignatureHelp(TypedDict):
 
 def _is_pybricks(c: Completion) -> bool:
     # filter all "private" names (leading underscore)
-    if (isinstance(c.name, str)) and c.name.startswith("_"):
-        return False
+    if c.name is not None:
+        if c.name.startswith("_") and c.module_name != "__main__":
+            return False
 
-    if isinstance(c.full_name, str):
+        if c.name in MICROPY_NOT_SUPPORTED_DUNDER:
+            return False
+
+    if c.full_name is not None:
         # this catches things like `from __future__ import annotations`
         if c.full_name.startswith("_") and c.module_name != "__main__":
             return False
@@ -254,16 +324,19 @@ def _is_pybricks(c: Completion) -> bool:
             return False
 
         # filter out typing types
-        if c.full_name.startswith("typing."):
+        if c.full_name.startswith("typing.") and c.full_name not in PYBRICKS_TYPING:
             return False
 
     # filter out packages/modules that are not included in Pybricks firmware
     if c.type == "module" or c.type == "namespace":
-        return c.full_name in PYBRICKS_CODE_PACKAGES
+        return c.full_name in PYBRICKS_CODE_PACKAGES or c.full_name in user_modules
 
     # filter subset of builtins
     if c.module_name == "builtins" and c.type != "keyword":
-        return c.name in PYBRICKS_BUILTINS
+        if c.full_name is None:
+            return c.name in PYBRICKS_BUILTINS_NO_FULLNAME
+
+        return c.full_name in PYBRICKS_BUILTINS
 
     # this is a type alias, not a real type
     if c.full_name == "pybricks.parameters.Number":
@@ -471,3 +544,15 @@ def get_signatures(code: str, line: int, column: int) -> str:
     """
     signatures = jedi.Script(code).get_signatures(line, column - 1)
     return json.dumps(_map_signatures(signatures))
+
+
+def update_user_modules(names: Iterable[str]) -> None:
+    """
+    Updates the set of user module names used for filtering.
+
+    Args:
+        names:
+            An iterable of module names.
+    """
+    user_modules.clear()
+    user_modules.update(names)
