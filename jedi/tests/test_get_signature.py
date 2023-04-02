@@ -104,6 +104,7 @@ CONSTRUCTOR_PARAMS = [
                 "positive_direction: Direction=Direction.CLOCKWISE",
                 "gears: Optional[Union[Collection[int], Collection[Collection[int]]]]=None",
                 "reset_angle: bool=True",
+                "profile: Number=None",
             ]
         ],
     ),
@@ -147,6 +148,7 @@ CONSTRUCTOR_PARAMS = [
                 "right_motor: Motor",
                 "wheel_diameter: Number",
                 "axle_track: Number",
+                "positive_direction: Direction=Direction.CLOCKWISE",
             ]
         ],
     ),

@@ -5,7 +5,11 @@
 ## Unreleased
 
 ### Added
+- Documented `positive_direction` in `DriveBase`.
+- Document deceleration setter in `DriveBase`.
 - Documented ``integral_deadzone`` in ``Control.pid()``.
+- Documented ``Motor.model``. This can be used to view the estimated motor
+  state and change its settings.
 
 ## 3.2.0 - 2022-12-20
 

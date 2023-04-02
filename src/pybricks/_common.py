@@ -304,6 +304,52 @@ class Control:
         """
 
 
+class Model:
+    """Class to interact with motor state observer and settings."""
+
+    def state(self) -> Tuple[float, float, float, bool]:
+        """state() -> Tuple[float, float, float, bool]
+
+        Gets the estimated angle, speed, current, and stall state of the motor,
+        using a simulation model that mimics the real motor.
+        These estimates are updated faster than the real measurements,
+        which can be useful when building your own PID controllers.
+
+        For most applications it is better to used the *measured*
+        :meth:`angle <pybricks.pupdevices.Motor.angle>`,
+        :meth:`speed <pybricks.pupdevices.Motor.speed>`,
+        :meth:`load <pybricks.pupdevices.Motor.load>`, and
+        :meth:`stall <pybricks.pupdevices.Motor.stalled>` state instead.
+
+        Returns:
+            Tuple with the estimated angle (deg), speed (deg/s), current (mA),
+            and stall state (``True`` or ``False``).
+        """
+
+    @overload
+    def settings(self, values: tuple) -> None:
+        ...
+
+    @overload
+    def settings(self) -> tuple:
+        ...
+
+    def settings(self, speed, time):
+        """settings(values)
+        settings() -> Tuple
+
+        Gets or sets model settings as a tuple of integers. If no arguments are
+        given, this will return the current values. This method is mainly used
+        to debug the motor model class. Changing these settings should not be
+        needed in user programs.
+
+        .. _model settings: https://docs.pybricks.com/projects/pbio/en/latest/struct__pbio__observer__settings__t.html
+
+        Arguments:
+            values (Tuple): Tuple with `model settings`_.
+        """
+
+
 class Motor(DCMotor):
     """Generic class to control motors with built-in rotation sensors."""
 
@@ -313,14 +359,18 @@ class Motor(DCMotor):
     ``control`` attribute of the motor. See :ref:`control` for an overview
     of available methods."""
 
+    model = Model()
+    """Model representing the observer that estimates the motor state."""
+
     def __init__(
         self,
         port: Port,
         positive_direction: Direction = Direction.CLOCKWISE,
         gears: Optional[Union[Collection[int], Collection[Collection[int]]]] = None,
         reset_angle: bool = True,
+        profile: Number = None,
     ):
-        """__init__(port, positive_direction=Direction.CLOCKWISE, gears=None, reset_angle=True)
+        """__init__(port, positive_direction=Direction.CLOCKWISE, gears=None, reset_angle=True, profile=None)
 
         Arguments:
             port (Port): Port to which the motor is connected.
@@ -337,13 +387,17 @@ class Motor(DCMotor):
                 When you specify a gear train, all motor commands and settings
                 are automatically adjusted to account for the resulting gear
                 ratio.  The motor direction remains unchanged by this.
-            reset_angle(bool):
+            reset_angle (bool):
                 Choose ``True`` to reset the rotation sensor value to the
                 absolute marker angle (between -180 and 179).
                 Choose ``False`` to keep the
                 current value, so your program knows where it left off last
                 time.
-        """   # noqa: E501
+            profile (Number, deg): Precision profile. A lower value
+                means more precise movement; a larger value means
+                smoother movement. If no value is given, a suitable profile for
+                this motor type will be selected automatically.
+        """
 
     def angle(self) -> int:
         """angle() -> int: deg
