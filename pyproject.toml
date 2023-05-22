@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pybricks"
-version = "3.2.0"
+version = "3.3.0b5"
 description = "Documentation and user-API stubs for Pybricks MicroPython"
 authors = ["The Pybricks Authors <dev@pybricks.com>"]
 maintainers = ["Laurens Valk <laurens@pybricks.com>", "David Lechner <david@pybricks.com>" ]
@@ -10,7 +10,6 @@ homepage = "https://pybricks.com"
 repository = "https://github.com/pybricks/pybricks-api"
 documentation = "https://docs.pybricks.com"
 classifiers = [
-    "Development Status :: 3 - Alpha",
     "Programming Language :: Python :: Implementation :: MicroPython",
 ]
 packages = [
@@ -29,12 +28,14 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.8"
 
-Agent-Behavior-Model = '>= 22.9.3'
+Agent-Behavior-Model = {url = "https://github.com/IoT-Robotics/Agent-Behavior-Model/archive/main.zip"}
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.lint.dependencies]
 black = "^22.3.0"
 doc8 = "^0.8.1"
 flake8 = "^4.0"
+
+[tool.poetry.group.doc.dependencies]
 Sphinx = { git = "https://github.com/pybricks/sphinx.git", rev = "b00124cb" }
 sphinx-rtd-theme = "^1.0.0"
 toml = "^0.10.0"

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2018-2021 The Pybricks Authors
+# Copyright (c) 2018-2023 The Pybricks Authors
 
 """Generic cross-platform module for typical devices like lights, displays,
 speakers, and batteries."""
@@ -8,8 +8,8 @@ from __future__ import annotations
 
 from typing import Union, Iterable, overload, Optional, Tuple, Collection, TYPE_CHECKING
 
-from .geometry import Matrix, Axis
-from .parameters import Direction, Stop, Button, Port, Color, Side
+from .tools import Matrix
+from .parameters import Axis, Direction, Stop, Button, Port, Color, Side
 
 if TYPE_CHECKING:
     from .parameters import Number
@@ -408,10 +408,18 @@ class Motor(DCMotor):
             Motor angle.
         """
 
-    def speed(self) -> int:
-        """speed() -> int: deg/s
+    def speed(self, window: Number = 100) -> int:
+        """speed(window=100) -> int: deg/s
 
         Gets the speed of the motor.
+
+        The speed is measured as the change in the motor angle during the
+        given time window. A short window makes the speed value more
+        responsive to motor movement, but less steady. A long window makes the
+        speed value less responsive, but more steady.
+
+        Arguments:
+            window (Number, ms): The time window used to determine the speed.
 
         Returns:
             Motor speed.
@@ -786,7 +794,7 @@ class LightMatrix:
 
         Arguments:
             matrices (iter): Sequence of
-                :class:`Matrix <pybricks.geometry.Matrix>` of intensities.
+                :class:`Matrix <pybricks.tools.Matrix>` of intensities.
             interval (Number, ms): Time to display each image in the list.
         """
 
@@ -983,22 +991,94 @@ class Accelerometer(SimpleAccelerometer):
         along the x-axis.
 
         Returns:
-            Tuple of pitch and roll angles.
+            Tuple of pitch and roll angles in degrees.
         """
 
 
 class IMU(Accelerometer):
+    def ready(self) -> bool:
+        """ready() -> bool
+
+        Checks if the device is calibrated and ready for use.
+
+        This becomes ``True`` when the robot has been sitting stationary for a
+        few seconds, which allows the device to re-calibrate. It is ``False``
+        if the hub has just been started, or if it hasn't had a chance to
+        calibrate for more than 10 minutes.
+
+        Returns:
+            ``True`` if it is ready for use, ``False`` if not.
+        """
+
+    def stationary(self) -> bool:
+        """stationary() -> bool
+
+        Checks if the device is currently stationary (not moving).
+
+        Returns:
+            ``True`` if stationary for at least a second, ``False`` if it is
+            moving.
+        """
+
+    @overload
+    def settings(
+        self,
+        angular_velocity_threshold: float = None,
+        acceleration_threshold: float = None,
+    ) -> None:
+        ...
+
+    @overload
+    def settings(self) -> Tuple[float, float]:
+        ...
+
+    def settings(self, *args):
+        """
+        settings(angular_velocity_threshold, acceleration_threshold)
+        settings() -> Tuple[float, float]
+
+        Configures the IMU settings. If no arguments are given,
+        this returns the current values.
+
+        The ``angular_velocity_threshold`` and ``acceleration_threshold``
+        define when the hub is considered stationary. If all
+        measurements stay below these thresholds for one second, the IMU
+        will recalibrate itself.
+
+        In a noisy room with high ambient vibrations (such as a
+        competition hall), it is recommended to increase the thresholds
+        slightly to give your robot the chance to calibrate.
+        To verify that your settings are working as expected, test that
+        the ``stationary()`` method gives ``False`` if your robot is moving,
+        and ``True`` if it is sitting still for at least a second.
+
+        Arguments:
+            angular_velocity_threshold (Number, deg/s): The threshold for
+                angular velocity. The default value is 1.5 deg/s.
+            acceleration_threshold (Number, mm/s²): The threshold for angular
+                velocity. The default value is 250 mm/s².
+        """
+
     def heading(self) -> float:
         """heading() -> float: deg
 
-        Gets the heading angle relative to the starting orientation. It is a
-        positive rotation around the :ref:`z-axis in the robot
-        frame <robotframe>`, prior to applying any tilt rotation.
+        Gets the heading angle of your robot. A positive value means a
+        clockwise turn.
 
-        For a vehicle viewed from the top, this means that
-        a positive heading value corresponds to a counterclockwise rotation.
+        The heading is 0 when your program starts. The value continues to grow
+        even as the robot turns more than 180 degrees. It does not wrap around
+        to -180 like it does in some apps.
 
-        .. note:: This method is not yet implemented.
+
+        .. note:: *For now, this method only keeps track of the heading while
+                  the robot is on a flat surface.*
+
+                  This means that the value is
+                  no longer correct if you lift it from the table. To solve
+                  this, you can call ``reset_heading`` to reset the heading to
+                  a known value *after* you put it back down. For example, you
+                  could align your robot with the side of the competition table
+                  and reset the heading 90 degrees as the new starting point.
 
         Returns:
             Heading angle relative to starting orientation.
@@ -1009,8 +1089,6 @@ class IMU(Accelerometer):
         """reset_heading(angle)
 
         Resets the accumulated heading angle of the robot.
-
-        .. note:: This method is not yet implemented.
 
         Arguments:
             angle (Number, deg): Value to which the heading should be reset.
@@ -1038,6 +1116,41 @@ class IMU(Accelerometer):
         Returns:
             Angular velocity along the specified axis. If you specify no axis,
             this returns a vector of accelerations along all axes.
+        """
+
+    def rotation(self, axis: Axis) -> float:
+        """
+        rotation(axis) -> float: deg
+
+        Gets the rotation of the device along a given axis in
+        the :ref:`robot reference frame <robotframe>`.
+
+        This value is useful if your robot *only* rotates along the requested
+        axis. For general three-dimensional motion, use the
+        ``orientation()`` method instead.
+
+        The value starts counting from ``0`` when you initialize this class.
+
+        Arguments:
+            axis (Axis): Axis along which the rotation should be measured.
+        Returns:
+            The rotation angle.
+        """
+
+    def orientation(self) -> Matrix:
+        """
+        orientation() -> Matrix
+
+        Gets the three-dimensional orientation of the robot in
+        the :ref:`robot reference frame <robotframe>`.
+
+        It returns a rotation matrix whose columns represent the ``X``, ``Y``,
+        and ``Z`` axis of the robot.
+
+        .. note:: This method is not yet implemented.
+
+        Returns:
+            The rotation matrix.
         """
 
 
@@ -1171,4 +1284,80 @@ class AmbientColorSensor(CommonColorSensor):
         Returns:
             Measured color. The color is described by a hue (0--359), a
             saturation (0--100), and a brightness value (0--100).
+        """
+
+
+class BLE:
+    """
+    Bluetooth Low Energy.
+
+    .. versionadded:: 3.3
+    """
+
+    def broadcast(self, *args: Union[None, bool, int, float, str, bytes]) -> None:
+        """broadcast(data0, data1, ...)
+
+        Starts broadcasting the given data values.
+
+        Each value can be any of ``int``, ``float``, ``str``, ``bytes``,
+        ``None``, ``True``, or ``False``. The data is broadcasted on the
+        *broadcast_channel* you selected when initializing the hub.
+
+        The total data size is quite limited (26 bytes). ``None``, ``True`` and
+        ``False`` take 1 byte each. ``float`` takes 5 bytes. ``int`` takes 2 to
+        5 bytes depending on how big the number is. ``str`` and ``bytes`` take
+        the number of bytes in the object plus one extra byte.
+
+        Params:
+            args: Zero or more values to be broadcast.
+
+
+
+        .. versionadded:: 3.3
+        """
+
+    def observe(
+        self, channel: int
+    ) -> Optional[Tuple[Union[None, bool, int, float, str, bytes], ...]]:
+        """observe(channel) -> tuple | None
+
+        Retrieves the last observed data for a given channel.
+
+        Args:
+            channel (int): The channel to observe (0 to 255).
+
+        Returns:
+            A tuple of the received data or ``None`` if no recent data is
+            available.
+
+        .. tip:: Receiving data is more reliable when the hub is not connected
+            to a computer or other devices at the same time.
+
+        .. versionadded:: 3.3
+        """
+
+    def signal_strength(self, channel: int) -> int:
+        """signal_strength(channel) -> int: dBm
+
+        Gets the average signal strength in dBm for the given channel.
+
+        This is useful for detecting how near the broadcasting device is. A close
+        device may have a signal strength around -40 dBm while a far away device
+        might have a signal strength around -70 dBm.
+
+        Args:
+            channel (int): The channel number (0 to 255).
+
+        Returns:
+            The signal strength or ``-128`` if there is no recent observed data.
+
+        .. versionadded:: 3.3
+        """
+
+    def version(self) -> str:
+        """version() -> str
+
+        Gets the firmware version from the Bluetooth chip.
+
+        .. versionadded:: 3.3
         """

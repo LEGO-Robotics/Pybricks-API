@@ -12,7 +12,7 @@ BUILD_DIR = (pathlib.Path(__file__).parent / "build").resolve()
 
 package_json = {
     "name": "@pybricks/jedi",
-    "version": "1.7.0",
+    "version": "1.9.0",
     "description": "Binary distribution of pybricks-jedi Python package and dependencies for use with Pyodide.",
     "repository": {
         "type": "git",
@@ -30,7 +30,7 @@ whl_map: dict[str, str] = {}
 shutil.rmtree(BUILD_DIR, True)
 BUILD_DIR.mkdir()
 
-# download package and depedencies (*.whl files)
+# download package and dependencies (*.whl files)
 subprocess.check_call(
     [
         sys.executable,
@@ -38,7 +38,7 @@ subprocess.check_call(
         "pip",
         "download",
         "--only-binary=any",
-        "pybricks-jedi==1.7.0",
+        "pybricks-jedi==1.9.0",
     ],
     cwd=BUILD_DIR,
 )

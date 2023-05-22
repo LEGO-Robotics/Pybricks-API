@@ -33,6 +33,7 @@ def test_hub_dot():
     completions: list[CompletionItem] = json.loads(complete(code, 3, len(line) + 1))
     assert [c["insertText"] for c in completions] == [
         "battery",
+        "ble",
         "buttons",
         "charger",
         "display",
@@ -97,7 +98,12 @@ def test_hub_dot_imu_dot():
         "acceleration",
         "angular_velocity",
         "heading",
+        "orientation",
+        "ready",
         "reset_heading",
+        "rotation",
+        "settings",
+        "stationary",
         "tilt",
         "up",
     ]

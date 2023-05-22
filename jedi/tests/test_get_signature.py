@@ -31,7 +31,7 @@ def _get_function_signature(module: str, function: str) -> SignatureHelp:
 FUNCTION_PARAMS = [
     pytest.param("pybricks.tools", "wait", [(["time: Number"], "None")]),
     pytest.param(
-        "pybricks.geometry",
+        "pybricks.tools",
         "vector",
         [
             (["x: float", "y: float"], "Matrix"),
@@ -78,17 +78,51 @@ def _get_constructor_signature(module: str, type: str) -> SignatureHelp:
 
 
 CONSTRUCTOR_PARAMS = [
-    pytest.param("pybricks.hubs", "MoveHub", [[]]),
-    pytest.param("pybricks.hubs", "CityHub", [[]]),
+    pytest.param(
+        "pybricks.hubs",
+        "MoveHub",
+        [["broadcast_channel: int=0", "observe_channels: Sequence[int]=[]"]],
+    ),
+    pytest.param(
+        "pybricks.hubs",
+        "CityHub",
+        [["broadcast_channel: int=0", "observe_channels: Sequence[int]=[]"]],
+    ),
     pytest.param(
         "pybricks.hubs",
         "TechnicHub",
-        [["top_side: Axis=Axis.Z", "front_side: Axis=Axis.X"]],
+        [
+            [
+                "top_side: Axis=Axis.Z",
+                "front_side: Axis=Axis.X",
+                "broadcast_channel: int=0",
+                "observe_channels: Sequence[int]=[]",
+            ]
+        ],
     ),
     pytest.param(
         "pybricks.hubs",
         "PrimeHub",
-        [["top_side: Axis=Axis.Z", "front_side: Axis=Axis.X"]],
+        [
+            [
+                "top_side: Axis=Axis.Z",
+                "front_side: Axis=Axis.X",
+                "broadcast_channel: int=0",
+                "observe_channels: Sequence[int]=[]",
+            ]
+        ],
+    ),
+    pytest.param(
+        "pybricks.hubs",
+        "EssentialHub",
+        [
+            [
+                "top_side: Axis=Axis.Z",
+                "front_side: Axis=Axis.X",
+                "broadcast_channel: int=0",
+                "observe_channels: Sequence[int]=[]",
+            ]
+        ],
     ),
     pytest.param(
         "pybricks.pupdevices",
@@ -148,12 +182,11 @@ CONSTRUCTOR_PARAMS = [
                 "right_motor: Motor",
                 "wheel_diameter: Number",
                 "axle_track: Number",
-                "positive_direction: Direction=Direction.CLOCKWISE",
             ]
         ],
     ),
     pytest.param(
-        "pybricks.geometry",
+        "pybricks.tools",
         "Matrix",
         [["rows: Sequence[Sequence[float]]"]],
     ),
@@ -308,11 +341,18 @@ METHOD_PARAMS = [
         [(["axis: Axis"], "float"), ([], "Matrix")],
     ),
     pytest.param("pybricks.hubs", "TechnicHub", "imu.heading", [([], "float")]),
+    pytest.param("pybricks.hubs", "TechnicHub", "imu.orientation", [([], "Matrix")]),
     pytest.param(
         "pybricks.hubs",
         "TechnicHub",
         "imu.reset_heading",
         [(["angle: Number"], "None")],
+    ),
+    pytest.param(
+        "pybricks.hubs",
+        "TechnicHub",
+        "imu.rotation",
+        [(["axis: Axis"], "float")],
     ),
     pytest.param("pybricks.hubs", "TechnicHub", "battery.voltage", [([], "int")]),
     pytest.param("pybricks.hubs", "TechnicHub", "battery.current", [([], "int")]),
@@ -400,11 +440,18 @@ METHOD_PARAMS = [
         [(["axis: Axis"], "float"), ([], "Matrix")],
     ),
     pytest.param("pybricks.hubs", "PrimeHub", "imu.heading", [([], "float")]),
+    pytest.param("pybricks.hubs", "PrimeHub", "imu.orientation", [([], "Matrix")]),
     pytest.param(
         "pybricks.hubs",
         "PrimeHub",
         "imu.reset_heading",
         [(["angle: Number"], "None")],
+    ),
+    pytest.param(
+        "pybricks.hubs",
+        "PrimeHub",
+        "imu.rotation",
+        [(["axis: Axis"], "float")],
     ),
     pytest.param(
         "pybricks.hubs",
@@ -483,11 +530,18 @@ METHOD_PARAMS = [
         [(["axis: Axis"], "float"), ([], "Matrix")],
     ),
     pytest.param("pybricks.hubs", "EssentialHub", "imu.heading", [([], "float")]),
+    pytest.param("pybricks.hubs", "EssentialHub", "imu.orientation", [([], "Matrix")]),
     pytest.param(
         "pybricks.hubs",
         "EssentialHub",
         "imu.reset_heading",
         [(["angle: Number"], "None")],
+    ),
+    pytest.param(
+        "pybricks.hubs",
+        "EssentialHub",
+        "imu.rotation",
+        [(["axis: Axis"], "float")],
     ),
     pytest.param("pybricks.hubs", "EssentialHub", "battery.voltage", [([], "int")]),
     pytest.param("pybricks.hubs", "EssentialHub", "battery.current", [([], "int")]),
@@ -522,7 +576,12 @@ METHOD_PARAMS = [
         "settings",
         [(["max_voltage: Number"], "None"), ([], "Tuple[int]")],
     ),
-    pytest.param("pybricks.pupdevices", "Motor", "speed", [([], "int")]),
+    pytest.param(
+        "pybricks.pupdevices",
+        "Motor",
+        "speed",
+        [(["window: Number=100"], "int")],
+    ),
     pytest.param("pybricks.pupdevices", "Motor", "angle", [([], "int")]),
     pytest.param(
         "pybricks.pupdevices",

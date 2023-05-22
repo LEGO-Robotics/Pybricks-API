@@ -8,7 +8,7 @@ import sys
 
 # General information about the project.
 project = "pybricks"
-copyright = "2018-2021 The Pybricks Authors"
+copyright = "2018-2023 The Pybricks Authors"
 author = ""
 
 _TITLE = "Pybricks Modules and Examples"
@@ -29,7 +29,7 @@ if os.environ.get("READTHEDOCS", None) == "True":
 # HACK: this allows Number type alias to be imported by Sphinx
 os.environ["SPHINX_BUILD"] = "True"
 
-# Addtional configuration of the IDE docs
+# Additional configuration of the IDE docs
 if "ide" in tags.tags:  # noqa F821
     _DISCLAIMER = ""
     html_show_copyright = False
@@ -45,7 +45,7 @@ if "ide" in tags.tags:  # noqa F821
 
 exec(open(os.path.abspath("../common/conf.py")).read())
 
-# Addtional configuration of the IDE docs
+# Additional configuration of the IDE docs
 if "ide" in tags.tags:  # noqa F821
 
     extensions.remove("sphinx.ext.mathjax")  # noqa F821

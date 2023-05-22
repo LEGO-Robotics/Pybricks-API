@@ -4,12 +4,29 @@
 
 ## Unreleased
 
+## 3.3.0b5 - 2023-05-16
+
 ### Added
-- Documented `positive_direction` in `DriveBase`.
-- Document deceleration setter in `DriveBase`.
-- Documented ``integral_deadzone`` in ``Control.pid()``.
-- Documented ``Motor.model``. This can be used to view the estimated motor
+- Documented new `hub.ble` methods.
+
+## 3.3.0b4 - 2023-04-21
+
+### Added
+- Documented `integral_deadzone` in `Control.pid()`.
+- Documented `Motor.model`. This can be used to view the estimated motor
   state and change its settings.
+- Added `rotation`, `orientation`, `ready`, `stationary` and `settings` methods
+  to `IMU` class.
+- Added `GyroDriveBase` class to `pybricks.robotics`.
+
+### Changed
+- Change implementation status of `IMU.heading` and `IMU.reset_heading`. They
+  are now implemented, with some limitations as noted in a note box.
+- Moved `Matrix` and `vector` from `pybricks.geometry` to `pybricks.tools`.
+- Moved `Axis` from `pybricks.geometry` to `pybricks.parameters`.
+
+### Removed
+- Removed `pybricks.geometry` module.
 
 ## 3.2.0 - 2022-12-20
 

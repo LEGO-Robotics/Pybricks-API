@@ -59,6 +59,10 @@ Prime Hub / Inventor Hub
 
     .. rubric:: Using the IMU
 
+    .. automethod:: pybricks.hubs::PrimeHub.imu.ready
+
+    .. automethod:: pybricks.hubs::PrimeHub.imu.stationary
+
     .. automethod:: pybricks.hubs::PrimeHub.imu.up
 
     .. automethod:: pybricks.hubs::PrimeHub.imu.tilt
@@ -71,6 +75,12 @@ Prime Hub / Inventor Hub
 
     .. automethod:: pybricks.hubs::PrimeHub.imu.reset_heading
 
+    .. automethod:: pybricks.hubs::PrimeHub.imu.rotation
+
+    .. automethod:: pybricks.hubs::PrimeHub.imu.orientation
+
+    .. automethod:: pybricks.hubs::PrimeHub.imu.settings
+
     .. rubric:: Using the speaker
 
     .. automethod:: pybricks.hubs::PrimeHub.speaker.volume
@@ -78,6 +88,16 @@ Prime Hub / Inventor Hub
     .. automethod:: pybricks.hubs::PrimeHub.speaker.beep
 
     .. automethod:: pybricks.hubs::PrimeHub.speaker.play_notes
+
+    .. rubric:: Using connectionless Bluetooth messaging
+
+    .. automethod:: pybricks.hubs::PrimeHub.ble.broadcast
+
+    .. automethod:: pybricks.hubs::PrimeHub.ble.observe
+
+    .. automethod:: pybricks.hubs::PrimeHub.ble.signal_strength
+
+    .. automethod:: pybricks.hubs::PrimeHub.ble.version
 
     .. rubric:: Using the battery
 
@@ -236,6 +256,23 @@ Reading acceleration and angular velocity on one axis
 
 .. literalinclude::
     ../../../examples/pup/hub_common/build/imu_read_scalar_primehub.py
+
+
+Bluetooth examples
+------------------
+
+Broadcasting data to other hubs
+*******************************
+
+.. literalinclude::
+    ../../../examples/pup/hub_common/build/ble_broadcast_primehub.py
+
+Observing data from other hubs
+******************************
+
+.. literalinclude::
+    ../../../examples/pup/hub_common/build/ble_observe_primehub.py
+
 
 System examples
 ----------------------------------

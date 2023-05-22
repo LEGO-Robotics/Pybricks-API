@@ -59,7 +59,6 @@ def test_from_pybricks_import():
     code = "from pybricks import "
     completions: list[CompletionItem] = json.loads(complete(code, 1, len(code) + 1))
     assert [c["insertText"] for c in completions] == [
-        "geometry",
         "hubs",
         "iodevices",
         "parameters",
@@ -74,23 +73,12 @@ def test_from_pybricks_dot():
     code = "from pybricks."
     completions: list[CompletionItem] = json.loads(complete(code, 1, len(code) + 1))
     assert [c["insertText"] for c in completions] == [
-        "geometry",
         "hubs",
         "iodevices",
         "parameters",
         "pupdevices",
         "robotics",
         "tools",
-    ]
-
-
-def test_from_pybricks_geometry_import():
-    code = "from pybricks.geometry import "
-    completions: list[CompletionItem] = json.loads(complete(code, 1, len(code) + 1))
-    assert [c["insertText"] for c in completions] == [
-        "Axis",
-        "Matrix",
-        "vector",
     ]
 
 
@@ -127,6 +115,7 @@ def test_from_pybricks_parameters_import():
     code = "from pybricks.parameters import "
     completions: list[CompletionItem] = json.loads(complete(code, 1, len(code) + 1))
     assert [c["insertText"] for c in completions] == [
+        "Axis",
         "Button",
         "Color",
         "Direction",
@@ -159,15 +148,18 @@ def test_from_pybricks_pupdevices_import():
 def test_from_pybricks_robotics_import():
     code = "from pybricks.robotics import "
     completions: list[CompletionItem] = json.loads(complete(code, 1, len(code) + 1))
-    assert [c["insertText"] for c in completions] == ["DriveBase"]
+    assert [c["insertText"] for c in completions] == ["DriveBase", "GyroDriveBase"]
 
 
 def test_from_pybricks_tools_import():
     code = "from pybricks.tools import "
     completions: list[CompletionItem] = json.loads(complete(code, 1, len(code) + 1))
     assert [c["insertText"] for c in completions] == [
+        "cross",
         "DataLog",
+        "Matrix",
         "StopWatch",
+        "vector",
         "wait",
     ]
 
