@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-# Copyright (c) 2018-2022 The Pybricks Authors
+# Copyright (c) 2018-2023 The Pybricks Authors
 
 """Robotics module for the Pybricks API."""
 
@@ -11,7 +11,7 @@ from . import _common
 from .parameters import Stop
 
 if TYPE_CHECKING:
-    from ._common import Motor
+    from ._common import Motor, MaybeAwaitable
     from .parameters import Number
 
 
@@ -85,6 +85,12 @@ class DriveBase:
         """stop()
 
         Stops the robot by letting the motors spin freely."""
+
+    def brake(self) -> None:
+        """brake()
+
+        Stops the robot by passively braking the motors.
+        """
 
     def distance(self) -> int:
         """distance() -> int: mm
@@ -161,7 +167,7 @@ class DriveBase:
 
     def straight(
         self, distance: Number, then: Stop = Stop.HOLD, wait: bool = True
-    ) -> None:
+    ) -> MaybeAwaitable:
         """straight(distance, then=Stop.HOLD, wait=True)
 
         Drives straight for a given distance and then stops.
@@ -173,7 +179,9 @@ class DriveBase:
                          with the rest of the program.
         """
 
-    def turn(self, angle: Number, then: Stop = Stop.HOLD, wait: bool = True) -> None:
+    def turn(
+        self, angle: Number, then: Stop = Stop.HOLD, wait: bool = True
+    ) -> MaybeAwaitable:
         """turn(angle, then=Stop.HOLD, wait=True)
 
         Turns in place by a given angle and then stops.
@@ -187,7 +195,7 @@ class DriveBase:
 
     def curve(
         self, radius: Number, angle: Number, then: Stop = Stop.HOLD, wait: bool = True
-    ) -> None:
+    ) -> MaybeAwaitable:
         """curve(radius, angle, then=Stop.HOLD, wait=True)
 
         Drives an arc along a circle of a given radius, by a given angle.
@@ -221,15 +229,21 @@ class DriveBase:
             ``True`` if the drivebase is stalled, ``False`` if not.
         """
 
+    def use_gyro(self, use_gyro: bool) -> None:
+        """use_gyro(use_gyro)
 
-class GyroDriveBase(DriveBase):
-    """A robotic vehicle with two powered wheels and an optional support
-    wheel or caster. It measures the heading using the hub's built-in gyroscope,
-    which can make turning and driving straight more accurate."""
+        Choose ``True`` to use the gyro sensor for turning and driving
+        straight. Choose ``False`` to rely only on the motor's built-in
+        rotation sensors.
+
+        Arguments:
+            use_gyro (bool): ``True`` to enable, ``False`` to disable.
+        """
 
 
 # HACK: hide from jedi
 if TYPE_CHECKING:
     del Motor
     del Number
+    del MaybeAwaitable
     del Stop

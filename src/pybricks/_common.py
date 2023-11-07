@@ -12,7 +12,30 @@ from .tools import Matrix
 from .parameters import Axis, Direction, Stop, Button, Port, Color, Side
 
 if TYPE_CHECKING:
+    from typing import Any, Awaitable, TypeVar
+
     from .parameters import Number
+
+    _T_co = TypeVar("_T_co", covariant=True)
+
+    class MaybeAwaitable(None, Awaitable[None]):
+        ...
+
+    # HACK: Cannot subclass bool, so using Any instead.
+    class MaybeAwaitableBool(Any, Awaitable[bool]):
+        ...
+
+    class MaybeAwaitableFloat(float, Awaitable[float]):
+        ...
+
+    class MaybeAwaitableInt(int, Awaitable[int]):
+        ...
+
+    class MaybeAwaitableTuple(Tuple[_T_co], Awaitable[Tuple[_T_co]]):
+        ...
+
+    class MaybeAwaitableColor(Color, Awaitable[Color]):
+        ...
 
 
 class System:
@@ -78,8 +101,8 @@ class System:
 
     def storage(self, offset, read=None, write=None):
         """
-        storage(self, offset, write=)
-        storage(self, offset, read=) -> bytes
+        storage(offset, write=)
+        storage(offset, read=) -> bytes
 
         Reads or writes binary data to persistent storage.
 
@@ -393,10 +416,12 @@ class Motor(DCMotor):
                 Choose ``False`` to keep the
                 current value, so your program knows where it left off last
                 time.
-            profile (Number, deg): Precision profile. A lower value
-                means more precise movement; a larger value means
-                smoother movement. If no value is given, a suitable profile for
-                this motor type will be selected automatically.
+            profile (Number, deg): Precision profile. This is the approximate
+                position tolerance in degrees that is acceptable in your
+                application. A lower value gives more precise but more erratic
+                movement; a higher value gives less precise but smoother
+                movement. If no value is given, a suitable profile for this
+                motor type will be selected automatically (about 11 degrees).
         """
 
     def angle(self) -> int:
@@ -476,7 +501,7 @@ class Motor(DCMotor):
 
     def run_time(
         self, speed: Number, time: Number, then: Stop = Stop.HOLD, wait: bool = True
-    ) -> None:
+    ) -> MaybeAwaitable:
         """run_time(speed, time, then=Stop.HOLD, wait=True)
 
         Runs the motor at a constant speed for a given amount of time.
@@ -499,7 +524,7 @@ class Motor(DCMotor):
         rotation_angle: Number,
         then: Stop = Stop.HOLD,
         wait: bool = True,
-    ) -> None:
+    ) -> MaybeAwaitable:
         """run_angle(speed, rotation_angle, then=Stop.HOLD, wait=True)
 
         Runs the motor at a constant speed by a given angle.
@@ -519,7 +544,7 @@ class Motor(DCMotor):
         target_angle: Number,
         then: Stop = Stop.HOLD,
         wait: bool = True,
-    ) -> None:
+    ) -> MaybeAwaitable:
         """run_target(speed, target_angle, then=Stop.HOLD, wait=True)
 
         Runs the motor at a constant speed towards a given target angle.
@@ -540,7 +565,7 @@ class Motor(DCMotor):
         speed: Number,
         then: Stop = Stop.COAST,
         duty_limit: Optional[Number] = None,
-    ) -> int:
+    ) -> MaybeAwaitableInt:
         """
         run_until_stalled(speed, then=Stop.COAST, duty_limit=None) -> int: deg
 
@@ -604,7 +629,7 @@ class Speaker:
             volume (Number, %): Volume of the speaker in the 0-100 range.
         """
 
-    def beep(self, frequency: Number = 500, duration: Number = 100) -> None:
+    def beep(self, frequency: Number = 500, duration: Number = 100) -> MaybeAwaitable:
         """beep(frequency=500, duration=100)
 
         Play a beep/tone.
@@ -618,7 +643,7 @@ class Speaker:
                 play continues to play indefinitely.
         """
 
-    def play_notes(self, notes: Iterable[str], tempo: Number = 120) -> None:
+    def play_notes(self, notes: Iterable[str], tempo: Number = 120) -> MaybeAwaitable:
         """play_notes(notes, tempo=120)
 
         Plays a sequence of musical notes. For example:
@@ -705,10 +730,31 @@ class ColorLight:
         """
 
 
+class ExternalColorLight:
+    """Control a multi-color light."""
+
+    def on(self, color: Color) -> MaybeAwaitable:
+        """on(color)
+
+        Turns on the light at the specified color.
+
+        Arguments:
+            color (Color): Color of the light.
+        """
+
+    def off(self) -> MaybeAwaitable:
+        """off()
+
+        Turns off the light.
+        """
+
+
 class LightArray3:
     """Control an array of three single-color lights."""
 
-    def on(self, brightness: Union[Number, Tuple[Number, Number, Number]]) -> None:
+    def on(
+        self, brightness: Union[Number, Tuple[Number, Number, Number]]
+    ) -> MaybeAwaitable:
         """on(brightness)
 
         Turns on the lights at the specified brightness.
@@ -720,10 +766,11 @@ class LightArray3:
                 of each light individually.
         """
 
-    def off(self) -> None:
+    def off(self) -> MaybeAwaitable:
         """off()
 
-        Turns off all the lights."""
+        Turns off all the lights.
+        """
 
 
 class LightArray4(LightArray3):
@@ -731,7 +778,7 @@ class LightArray4(LightArray3):
 
     def on(
         self, brightness: Union[Number, Tuple[Number, Number, Number, Number]]
-    ) -> None:
+    ) -> MaybeAwaitable:
         """on(brightness)
 
         Turns on the lights at the specified brightness.
@@ -1164,7 +1211,7 @@ class CommonColorSensor:
             port (Port): Port to which the sensor is connected.
         """
 
-    def color(self) -> Color:
+    def color(self) -> MaybeAwaitableColor:
         """color() -> Color
 
         Scans the color of a surface.
@@ -1178,7 +1225,7 @@ class CommonColorSensor:
             Detected color.
         """
 
-    def hsv(self) -> Color:
+    def hsv(self) -> MaybeAwaitableColor:
         """hsv() -> Color
 
         Scans the color of a surface.
@@ -1192,7 +1239,7 @@ class CommonColorSensor:
             saturation (0--100), and a brightness value (0--100).
         """
 
-    def ambient(self) -> int:
+    def ambient(self) -> MaybeAwaitableInt:
         """ambient() -> int: %
 
         Measures the ambient light intensity.
@@ -1202,7 +1249,7 @@ class CommonColorSensor:
             to 100% (bright).
         """
 
-    def reflection(self) -> int:
+    def reflection(self) -> MaybeAwaitableInt:
         """reflection() -> int: %
 
         Measures how much a surface reflects the light emitted by the
@@ -1248,7 +1295,7 @@ class AmbientColorSensor(CommonColorSensor):
     """Like CommonColorSensor, but also detects ambient colors when the sensor
     light is turned off"""
 
-    def color(self, surface: bool = True) -> Optional[Color]:
+    def color(self, surface: bool = True) -> MaybeAwaitableColor:
         """color(surface=True) -> Color
 
         Scans the color of a surface or an external light source.
@@ -1267,7 +1314,7 @@ class AmbientColorSensor(CommonColorSensor):
             Detected color.`
         """
 
-    def hsv(self, surface: bool = True) -> Color:
+    def hsv(self, surface: bool = True) -> MaybeAwaitableColor:
         """hsv(surface=True) -> Color
 
         Scans the color of a surface or an external light source.
@@ -1294,44 +1341,42 @@ class BLE:
     .. versionadded:: 3.3
     """
 
-    def broadcast(self, *args: Union[None, bool, int, float, str, bytes]) -> None:
-        """broadcast(data0, data1, ...)
+    def broadcast(self, data: Union[bool, int, float, str, bytes]) -> None:
+        """broadcast(data)
 
-        Starts broadcasting the given data values.
+        Starts broadcasting the given data on
+        the *broadcast_channel* you selected when initializing the hub.
 
-        Each value can be any of ``int``, ``float``, ``str``, ``bytes``,
-        ``None``, ``True``, or ``False``. The data is broadcasted on the
-        *broadcast_channel* you selected when initializing the hub.
+        Data may be of type ``int``, ``float``, ``str``, ``bytes``,
+        ``True``, or ``False``, or a tuple thereof.
 
-        The total data size is quite limited (26 bytes). ``None``, ``True`` and
+        The total data size is quite limited (26 bytes). ``True`` and
         ``False`` take 1 byte each. ``float`` takes 5 bytes. ``int`` takes 2 to
         5 bytes depending on how big the number is. ``str`` and ``bytes`` take
         the number of bytes in the object plus one extra byte.
 
-        Params:
-            args: Zero or more values to be broadcast.
-
-
+        Args:
+            data: The value or values to be broadcast.
 
         .. versionadded:: 3.3
         """
 
     def observe(
         self, channel: int
-    ) -> Optional[Tuple[Union[None, bool, int, float, str, bytes], ...]]:
-        """observe(channel) -> tuple | None
+    ) -> Optional[Tuple[Union[bool, int, float, str, bytes], ...]]:
+        """observe(channel) -> bool | int | float | str | bytes | tuple | None
 
         Retrieves the last observed data for a given channel.
+
+        Receiving data is more reliable when the hub is not connected
+        to a computer or other devices at the same time.
 
         Args:
             channel (int): The channel to observe (0 to 255).
 
         Returns:
-            A tuple of the received data or ``None`` if no recent data is
-            available.
-
-        .. tip:: Receiving data is more reliable when the hub is not connected
-            to a computer or other devices at the same time.
+            The received data in the same format as it was sent, or ``None``
+            if no recent data is available.
 
         .. versionadded:: 3.3
         """
@@ -1341,8 +1386,8 @@ class BLE:
 
         Gets the average signal strength in dBm for the given channel.
 
-        This is useful for detecting how near the broadcasting device is. A close
-        device may have a signal strength around -40 dBm while a far away device
+        This indicates how near the broadcasting device is. Nearby devices
+        may have a signal strength around -40 dBm, while far away devices
         might have a signal strength around -70 dBm.
 
         Args:

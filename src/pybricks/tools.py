@@ -5,13 +5,14 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Sequence, Tuple, overload
+from typing import TYPE_CHECKING, Any, Optional, Sequence, Tuple, overload, Coroutine
 
 if TYPE_CHECKING:
+    from ._common import MaybeAwaitable, MaybeAwaitableTuple
     from .parameters import Number
 
 
-def wait(time: Number) -> None:
+def wait(time: Number) -> MaybeAwaitable:
     """wait(time)
 
     Pauses the user program for a specified amount of time.
@@ -222,6 +223,72 @@ def cross(a: Matrix, b: Matrix) -> Matrix:
     """
 
 
+def read_input_byte() -> Optional[int]:
+    """
+    read_input_byte() -> int | None
+
+    Reads one byte from standard input without blocking.
+
+    Returns:
+        The numeric value of the byte read or ``None`` if no data is available.
+    """
+
+
+def hub_menu(*symbols: int | str) -> int | str:
+    """
+    hub_menu(symbol1, symbol2, ...) -> int | str
+
+    Shows a menu on the hub display and waits for the user to select an item
+    using the buttons. Can be used in your own menu-program that lets you
+    choose which of your other programs to run.
+
+    Note that this is just a convenience function that combines the display,
+    buttons, and waits to make a simple menu. This means that it can be used
+    anywhere in a program, not just at the start.
+
+    Arguments:
+        symbol1 (int or str): The first symbol to show in the menu.
+        symbol2 (int or str): The second symbol, and so on...
+
+    Returns:
+        The selected symbol.
+    """
+
+
+def multitask(*coroutines: Coroutine, race=False) -> MaybeAwaitableTuple:
+    """
+    multitask(coroutine1, coroutine2, ...) -> Tuple
+
+    Runs multiple coroutines concurrently. This creates a new coroutine that
+    can be used like any other, including in another ``multitask`` statement.
+
+    Arguments:
+        coroutines (coroutine, coroutine, ...): One or more coroutines to run
+            in parallel.
+        race (bool): Choose ``False`` to wait for all coroutines to finish.
+            Choose ``True`` to wait for one coroutine to finish and then
+            cancel the others, as if it's a "race".
+
+    Returns:
+        Tuple of the return values of each coroutine. Unfinished coroutines
+        will have ``None`` as their return value.
+    """
+
+
+def run_task(coroutine: Coroutine):
+    """
+    run_task(coroutine)
+
+    Runs a coroutine from start to finish while blocking the rest of the
+    program. This is used primarily to run the main coroutine of a program.
+
+    Arguments:
+        coroutine (coroutine): The main coroutine to run.
+    """
+
+
 # HACK: hide from jedi
 if TYPE_CHECKING:
     del Number
+    del MaybeAwaitable
+    del MaybeAwaitableTuple

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pybricks"
-version = "3.3.0b5"
+version = "3.3.0b9"
 description = "Documentation and user-API stubs for Pybricks MicroPython"
 authors = ["The Pybricks Authors <dev@pybricks.com>"]
 maintainers = ["Laurens Valk <laurens@pybricks.com>", "David Lechner <david@pybricks.com>" ]
@@ -36,7 +36,7 @@ doc8 = "^0.8.1"
 flake8 = "^4.0"
 
 [tool.poetry.group.doc.dependencies]
-Sphinx = { git = "https://github.com/pybricks/sphinx.git", rev = "b00124cb" }
+Sphinx = { git = "https://github.com/pybricks/sphinx.git", rev = "cd277d09" }
 sphinx-rtd-theme = "^1.0.0"
 toml = "^0.10.0"
 

@@ -145,13 +145,10 @@ add_module_names = False  # Hide module name
 
 # -- Options for HTML output ----------------------------------------------
 
-if ON_RTD:
-    html_theme = "default"
-else:
-    import sphinx_rtd_theme
+import sphinx_rtd_theme
 
-    html_theme = "sphinx_rtd_theme"
-    html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+html_theme = "sphinx_rtd_theme"
+html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
 html_context = {
     "disclaimer": _DISCLAIMER,
@@ -343,13 +340,16 @@ def on_missing_reference(
         "Ω",
         "N",
     ]:
+        try:
+            # If they match on raw source, we are dealing with argument types.
+            if unit == contnode.rawsource:
+                # Return as-is to suppress missing cross reference warning. We
+                # could make this more fancy by returning an xref node that links
+                # to the signals page.
+                return contnode
 
-        # If they match on raw source, we are dealing with argument types.
-        if unit == contnode.rawsource:
-            # Return as-is to suppress missing cross reference warning. We
-            # could make this more fancy by returning an xref node that links
-            # to the signals page.
-            return contnode
+        except AttributeError:
+            pass
 
         # Return types are denoted as "int: deg"
         try:
