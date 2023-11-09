@@ -26,7 +26,9 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = ">= 3.11"
+
+Agent-Behavior-Model = {url = "https://github.com/IoT-Robotics/Agent-Behavior-Model/archive/main.zip"}
 
 [tool.poetry.group.lint.dependencies]
 black = "^22.3.0"
